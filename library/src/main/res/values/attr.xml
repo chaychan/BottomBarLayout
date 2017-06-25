@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BottomBarItem">
+        <attr name="iconNormal" format="reference"/>
+        <attr name="iconSelected" format="reference"/>
+        <attr name="itemText" format="string"/>
+        <attr name="itemTextSize" format="dimension"/>
+        <attr name="textColorNormal" format="color"/>
+        <attr name="textColorSelected" format="color"/>
+        <attr name="itemMarginTop" format="dimension"/>
+    </declare-styleable>
+</resources>
