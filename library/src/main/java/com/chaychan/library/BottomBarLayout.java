@@ -116,7 +116,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
             resetState();
             mItemViews.get(currentIndex).setStatus(true);//设置为选中状态
             //不能使用平滑滚动，否者颜色改变会乱
-            mViewPager.setCurrentItem(currentIndex, false);
+            mViewPager.setCurrentItem(currentIndex, mSmoothScroll);
             //点击是保存当前按钮索引
             mCurrentItem = currentIndex;
         }
@@ -131,8 +131,8 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         }
     }
 
-    public void setCurrentItem(int mCurrentItem) {
-        this.mCurrentItem = mCurrentItem;
+    public void setCurrentItem(int currentItem) {
+        mCurrentItem = currentItem;
         mViewPager.setCurrentItem(mCurrentItem,mSmoothScroll);
     }
 
