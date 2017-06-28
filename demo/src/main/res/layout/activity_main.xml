@@ -35,6 +35,8 @@
             app:textColorSelected="@color/tab_selected_color"
             app:itemTextSize="8sp"
             app:itemMarginTop="-5dp"
+            app:openTouchBg="true"
+            app:touchDrawable="@drawable/selector_bg"
             />
 
         <com.chaychan.library.BottomBarItem
@@ -48,6 +50,8 @@
             app:textColorSelected="@color/tab_selected_color"
             app:itemTextSize="8sp"
             app:itemMarginTop="-5dp"
+            app:openTouchBg="true"
+            app:touchDrawable="@drawable/selector_bg"
             />
 
 
@@ -62,6 +66,8 @@
             app:textColorSelected="@color/tab_selected_color"
             app:itemTextSize="8sp"
             app:itemMarginTop="-5dp"
+            app:openTouchBg="true"
+            app:touchDrawable="@drawable/selector_bg"
             />
 
         <com.chaychan.library.BottomBarItem
@@ -75,6 +81,8 @@
             app:textColorSelected="@color/tab_selected_color"
             app:itemTextSize="8sp"
             app:itemMarginTop="-5dp"
+            app:openTouchBg="true"
+            app:touchDrawable="@drawable/selector_bg"
             />
 
     </com.chaychan.library.BottomBarLayout>

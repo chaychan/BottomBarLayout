@@ -15,5 +15,9 @@
         <attr name="textColorSelected" format="color"/>
         <!--文字和图标的顶部距离-->
         <attr name="itemMarginTop" format="dimension"/>
+        <!--是否开启触摸背景效果-->
+        <attr name="openTouchBg" format="boolean"/>
+        <!--设置触摸背景-->
+        <attr name="touchDrawable" format="reference"/>
     </declare-styleable>
 </resources>

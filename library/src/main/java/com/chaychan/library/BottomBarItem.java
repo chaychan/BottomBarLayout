@@ -2,6 +2,7 @@ package com.chaychan.library;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -28,8 +29,13 @@ public class BottomBarItem extends LinearLayout {
     private int mTextColorNormal = 0xFF999999;    //描述文本的默认显示颜色
     private int mTextColorSelected = 0xFF46C01B;  //述文本的默认选中显示颜色
     private int mMarginTop = 0;//文字和图标的距离,默认0dp
+    private boolean mOpenTouchBg = false;// 是否开启触摸背景，默认关闭
+    private Drawable mTouchDrawable;//触摸时的背景
+
     private TextView mTextView;
     private ImageView mImageView;
+
+
 
     public BottomBarItem(Context context) {
         this(context, null);
@@ -56,6 +62,10 @@ public class BottomBarItem extends LinearLayout {
         mTextColorSelected = ta.getColor(R.styleable.BottomBarItem_textColorSelected, mTextColorSelected);
 
         mMarginTop = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemMarginTop, UIUtils.dip2Px(mContext, mMarginTop));
+
+        mOpenTouchBg = ta.getBoolean(R.styleable.BottomBarItem_openTouchBg, mOpenTouchBg);
+        mTouchDrawable = ta.getDrawable(R.styleable.BottomBarItem_touchDrawable);
+
         ta.recycle();
 
         checkValues();
@@ -72,6 +82,11 @@ public class BottomBarItem extends LinearLayout {
 
         if (mIconSelectedResourceId == -1) {
             throw new IllegalStateException("您还没有设置选中状态下的图标，请指定iconSelected的图标");
+        }
+
+        if (mOpenTouchBg && mTouchDrawable == null){
+            //如果有开启触摸背景效果但是没有传对应的drawable
+            throw new IllegalStateException("开启了触摸效果，但是没有指定touchDrawable");
         }
     }
 
@@ -91,6 +106,11 @@ public class BottomBarItem extends LinearLayout {
         LayoutParams layoutParams = (LayoutParams) mTextView.getLayoutParams();
         layoutParams.topMargin = mMarginTop;
         mTextView.setLayoutParams(layoutParams);
+
+        if (mOpenTouchBg){
+            //如果有开启触摸背景
+            setBackground(mTouchDrawable);
+        }
 
         addView(view);
     }
