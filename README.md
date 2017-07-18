@@ -1,12 +1,12 @@
-###轻量级的底部导航栏
+### 轻量级的底部导航栏
 &emsp;&emsp;目前市场上的App，几乎都有底部页签导航栏，所以我们在开发的时候经常需要用到这个，虽然github上有不少已经封装好的底部导航栏的工具，例如bottombar,alphaIndicator(仿微信滑动渐变底部控件)等，但是这些控件由于功能太多，而且也没有给予详细的介绍文档，所以用起来不是特别容易，有时候我们仅仅只是想要一个简简单单的底部导航，但是又不想去自己在布局中搞一个个LinearLayout或者RadioGroup，然后切换页签的时候更换图标，让ViewPager跳转到对应的页面等一系列繁琐的操作，这时候，你可以使用BottomBarLayout，简简单单就可以实现以下效果：
 
 ![](./intro_img/display1.gif)
 
 
-###BottomBarLayout的使用
+### BottomBarLayout的使用
 
-####布局文件中配置
+#### 布局文件中配置
 
 在xml文件中，配置BottomBarLayout，包裹子条目BottomBarItem
     
@@ -94,7 +94,7 @@
 	</LinearLayout>
 
 
-####BottomBarItem属性介绍
+#### BottomBarItem属性介绍
 
         <!--默认状态下的图标-->
         <attr name="iconNormal" format="reference"/>
@@ -111,7 +111,7 @@
         <!--文字和图标的顶部距离-->
         <attr name="itemMarginTop" format="dimension"/>
 
-####java文件中设置
+#### java文件中设置
 
 找过对应的ViewPager和BottomBarLayout,为ViewPager设置Adapter，然后为BottomBarLayout设置ViewPager
      
@@ -120,7 +120,7 @@
 
 这样就实现底部导航栏功能了
 
-####开启滑动效果
+#### 开启滑动效果
 
 页签之间的切换默认关闭了滑动效果，如果需要开启可以通过调用BottomBarLayout的setSmoothScroll()方法:
 
@@ -130,7 +130,7 @@
 
 ![](./intro_img/display2.gif)
 
-####设置条目选中的监听
+#### 设置条目选中的监听
 
      mBottomBarLayout.setOnItemSelectedListener(new BottomBarLayout.OnItemSelectedListener() {
             @Override
@@ -139,7 +139,7 @@
             }
         });
 
-####BottomBarItem的介绍
+#### BottomBarItem的介绍
 &emsp;&emsp;BottomBarItem继承于LinearLayout，其子View有显示图标的ImageView和展示文字的TextView,分别可以通过getImageView()和getTextView()方法获取到对应的子控件。github上不少底部导航栏的控件都没能获取到对应的子控件，所以在需要对子控件进行操作的时候极不方便，有一些的思路并不是用ImageView和TextView，而是用绘制的，所以也不能获取到对应的显示图标的控件或展示文字的控件，造成无法获取到该控件，无法进行一些业务上的操作，比如类似今日头条的底部的首页，点击首页的页签，会更换成加载中的图标，执行旋转动画，BottomBarLayout可以轻松地做到这个需求。
 
 演示效果如下：
@@ -201,7 +201,7 @@
 	        }
 	    }
 
-####实现思路：
+#### 实现思路：
 
 1.当点击页签加载的时候，BottomBarItem通过调用setIconSelectedResourceId()设置成选中状态下的图标资源id为加载中图标的资源id,完成图标的更换操作;
 
@@ -209,7 +209,7 @@
 
 
 
-####**导入方式**####
+#### **导入方式**
 
 在项目根目录下的build.gradle中的allprojects{}中，添加jitpack仓库地址，如下：
 
