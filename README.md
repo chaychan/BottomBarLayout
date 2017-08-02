@@ -110,6 +110,16 @@
         <attr name="textColorSelected" format="color"/>
         <!--文字和图标的顶部距离-->
         <attr name="itemMarginTop" format="dimension"/>
+        <!--是否开启触摸背景效果-->
+        <attr name="openTouchBg" format="boolean"/>
+        <!--设置触摸背景-->
+        <attr name="touchDrawable" format="reference"/>
+        <!--设置图标的宽度-->
+        <attr name="iconWidth" format="dimension"/>
+        <!--设置图标的高度-->
+        <attr name="iconHeight" format="dimension"/>
+        <!--设置BottomBarItem的padding-->
+        <attr name="itemPadding" format="dimension"/>
 
 #### java文件中设置
 
@@ -223,7 +233,7 @@
 打开app的module中的build.gradle，在dependencies{}中，添加依赖，如下：
 
     dependencies {
-	        compile 'com.github.chaychan:BottomBarLayout:1.0.0'
+	        compile 'com.github.chaychan:BottomBarLayout:1.0.2'
 	}
 
 
