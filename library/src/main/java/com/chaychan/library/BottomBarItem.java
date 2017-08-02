@@ -31,6 +31,9 @@ public class BottomBarItem extends LinearLayout {
     private int mMarginTop = 0;//文字和图标的距离,默认0dp
     private boolean mOpenTouchBg = false;// 是否开启触摸背景，默认关闭
     private Drawable mTouchDrawable;//触摸时的背景
+    private int mIconWidth;//图标的宽度
+    private int mIconHeight;//图标的高度
+    private int mItemPadding;//BottomBarItem的padding
 
     private TextView mTextView;
     private ImageView mImageView;
@@ -66,6 +69,10 @@ public class BottomBarItem extends LinearLayout {
         mOpenTouchBg = ta.getBoolean(R.styleable.BottomBarItem_openTouchBg, mOpenTouchBg);
         mTouchDrawable = ta.getDrawable(R.styleable.BottomBarItem_touchDrawable);
 
+        mIconWidth = ta.getDimensionPixelSize(R.styleable.BottomBarItem_iconWidth, 0);
+        mIconHeight = ta.getDimensionPixelSize(R.styleable.BottomBarItem_iconHeight, 0);
+        mItemPadding = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemPadding, 0);
+
         ta.recycle();
 
         checkValues();
@@ -95,17 +102,31 @@ public class BottomBarItem extends LinearLayout {
         setGravity(Gravity.CENTER);
 
         View view = View.inflate(mContext, R.layout.item_bottom_bar, null);
+        if (mItemPadding != 0){
+            //如果有设置item的padding
+            view.setPadding(mItemPadding,mItemPadding,mItemPadding,mItemPadding);
+        }
         mImageView = (ImageView) view.findViewById(R.id.iv_icon);
         mTextView = (TextView) view.findViewById(R.id.tv_text);
 
+
         mImageView.setImageResource(mIconNormalResourceId);
+
+        if (mIconWidth != 0 && mIconHeight != 0){
+            //如果有设置图标的宽度和高度，则设置ImageView的宽高
+            LayoutParams imageLayoutParams = (LayoutParams) mImageView.getLayoutParams();
+            imageLayoutParams.width = mIconWidth;
+            imageLayoutParams.height = mIconHeight;
+            mImageView.setLayoutParams(imageLayoutParams);
+        }
+
         mTextView.getPaint().setTextSize(mTextSize);
         mTextView.setText(mText);
         mTextView.setTextColor(mTextColorNormal);
 
-        LayoutParams layoutParams = (LayoutParams) mTextView.getLayoutParams();
-        layoutParams.topMargin = mMarginTop;
-        mTextView.setLayoutParams(layoutParams);
+        LayoutParams textLayoutParams = (LayoutParams) mTextView.getLayoutParams();
+        textLayoutParams.topMargin = mMarginTop;
+        mTextView.setLayoutParams(textLayoutParams);
 
         if (mOpenTouchBg){
             //如果有开启触摸背景
