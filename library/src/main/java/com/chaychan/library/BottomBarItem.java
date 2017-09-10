@@ -5,12 +5,12 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 
 
 /**
@@ -35,9 +35,15 @@ public class BottomBarItem extends LinearLayout {
     private int mIconHeight;//图标的高度
     private int mItemPadding;//BottomBarItem的padding
 
-    private TextView mTextView;
-    private ImageView mImageView;
 
+    private ImageView mImageView;
+    private TextView mTvUnread;
+    private TextView mTvNotify;
+    private TextView mTvMsg;
+    private TextView mTextView;
+
+    private int mUnreadTextSize = 10; //未读数默认字体大小10sp
+    private int mMsgTextSize = 6; //消息默认字体大小6sp
 
 
     public BottomBarItem(Context context) {
@@ -73,6 +79,9 @@ public class BottomBarItem extends LinearLayout {
         mIconHeight = ta.getDimensionPixelSize(R.styleable.BottomBarItem_iconHeight, 0);
         mItemPadding = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemPadding, 0);
 
+        mUnreadTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_unreadTextSize, UIUtils.sp2px(mContext,mUnreadTextSize));
+        mMsgTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_msgTextSize, UIUtils.sp2px(mContext,mMsgTextSize));
+
         ta.recycle();
 
         checkValues();
@@ -107,8 +116,10 @@ public class BottomBarItem extends LinearLayout {
             view.setPadding(mItemPadding,mItemPadding,mItemPadding,mItemPadding);
         }
         mImageView = (ImageView) view.findViewById(R.id.iv_icon);
+        mTvUnread = (TextView) view.findViewById(R.id.tv_unred_num);
+        mTvMsg = (TextView) view.findViewById(R.id.tv_msg);
+        mTvNotify = (TextView) view.findViewById(R.id.tv_point);
         mTextView = (TextView) view.findViewById(R.id.tv_text);
-
 
         mImageView.setImageResource(mIconNormalResourceId);
 
@@ -120,9 +131,12 @@ public class BottomBarItem extends LinearLayout {
             mImageView.setLayoutParams(imageLayoutParams);
         }
 
-        mTextView.getPaint().setTextSize(mTextSize);
-        mTextView.setText(mText);
-        mTextView.setTextColor(mTextColorNormal);
+        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mTextSize);//设置底部文字字体大小
+        mTvUnread.setTextSize(TypedValue.COMPLEX_UNIT_PX,mUnreadTextSize);//设置未读数的字体大小
+        mTvMsg.setTextSize(TypedValue.COMPLEX_UNIT_PX,mMsgTextSize);//设置提示文字的字体大小
+
+        mTextView.setTextColor(mTextColorNormal);//设置底部文字字体颜色
+        mTextView.setText(mText);//设置标签文字
 
         LayoutParams textLayoutParams = (LayoutParams) mTextView.getLayoutParams();
         textLayoutParams.topMargin = mMarginTop;
@@ -155,5 +169,45 @@ public class BottomBarItem extends LinearLayout {
     public void setStatus(boolean isSelected){
         mImageView.setImageResource(isSelected?mIconSelectedResourceId:mIconNormalResourceId);
         mTextView.setTextColor(isSelected?mTextColorSelected:mTextColorNormal);
+    }
+
+    private void setTvVisiable(TextView tv){
+        //都设置为不可见
+        mTvUnread.setVisibility(GONE);
+        mTvMsg.setVisibility(GONE);
+        mTvNotify.setVisibility(GONE);
+
+        tv.setVisibility(VISIBLE);//设置为可见
+    }
+
+    /**
+     * 设置未读数
+     * @param unreadNum 小于等于0则隐藏，大于0小于99则显示对应数字，超过99显示99+
+     */
+    public void setUnreadNum(int unreadNum){
+        setTvVisiable(mTvUnread);
+        if (unreadNum <= 0){
+            mTvUnread.setVisibility(GONE);
+        }else if (unreadNum <= 99){
+            mTvUnread.setText(String.valueOf(unreadNum));
+        }else{
+            mTvUnread.setText("99+");
+        }
+    }
+    public void setMsg(String msg){
+        setTvVisiable(mTvMsg);
+        mTvMsg.setText(msg);
+    }
+
+    public void hideMsg(){
+        mTvMsg.setVisibility(GONE);
+    }
+
+    public void showNotify(){
+        setTvVisiable(mTvNotify);
+    }
+
+    public void hideNotify(){
+        mTvNotify.setVisibility(GONE);
     }
 }
