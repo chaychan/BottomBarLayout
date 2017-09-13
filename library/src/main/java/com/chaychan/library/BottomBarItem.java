@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -125,7 +126,7 @@ public class BottomBarItem extends LinearLayout {
 
         if (mIconWidth != 0 && mIconHeight != 0){
             //如果有设置图标的宽度和高度，则设置ImageView的宽高
-            LayoutParams imageLayoutParams = (LayoutParams) mImageView.getLayoutParams();
+            FrameLayout.LayoutParams imageLayoutParams = (FrameLayout.LayoutParams) mImageView.getLayoutParams();
             imageLayoutParams.width = mIconWidth;
             imageLayoutParams.height = mIconHeight;
             mImageView.setLayoutParams(imageLayoutParams);
