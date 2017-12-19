@@ -115,6 +115,11 @@ public class MainActivity extends FragmentActivity {
                 cancelTabLoading(bottomItem);//停止旋转动画
             }
         });
+
+        mBottomBarLayout.setUnread(0,20);//设置第一个页签的未读数为20
+        mBottomBarLayout.setUnread(1,101);//设置第二个页签的未读书
+        mBottomBarLayout.showNotify(2);//设置第三个页签显示提示的小红点
+        mBottomBarLayout.setMsg(3,"NEW");//设置第四个页签显示NEW提示文字
     }
 
     /**停止首页页签的旋转动画*/

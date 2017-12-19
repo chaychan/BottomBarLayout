@@ -25,5 +25,9 @@
         <attr name="iconHeight" format="dimension"/>
         <!--设置BottomBarItem的padding-->
         <attr name="itemPadding" format="dimension"/>
+        <!--设置未读数字体大小-->
+        <attr name="unreadTextSize" format="dimension"/>
+        <!--设置提示消息字体大小-->
+        <attr name="msgTextSize" format="dimension"/>
     </declare-styleable>
 </resources>

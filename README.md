@@ -3,8 +3,42 @@
 
 ![](./intro_img/display1.gif)
 
+####显示未读数、提示小红点、提示消息
+
+![](./intro_img/4.png)
 
 ### BottomBarLayout的使用
+
+#### BottomBarItem属性介绍
+
+        <!--默认状态下的图标-->
+        <attr name="iconNormal" format="reference"/>
+        <!--选中状态下的图标-->
+        <attr name="iconSelected" format="reference"/>
+        <!--底部文字-->
+        <attr name="itemText" format="string"/>
+        <!--文字大小-->
+        <attr name="itemTextSize" format="dimension"/>
+        <!--默认状态下的文字颜色-->
+        <attr name="textColorNormal" format="color"/>
+        <!--选中状态下的文字颜色-->
+        <attr name="textColorSelected" format="color"/>
+        <!--文字和图标的顶部距离-->
+        <attr name="itemMarginTop" format="dimension"/>
+        <!--是否开启触摸背景效果-->
+        <attr name="openTouchBg" format="boolean"/>
+        <!--设置触摸背景-->
+        <attr name="touchDrawable" format="reference"/>
+        <!--设置图标的宽度-->
+        <attr name="iconWidth" format="dimension"/>
+        <!--设置图标的高度-->
+        <attr name="iconHeight" format="dimension"/>
+        <!--设置BottomBarItem的padding-->
+        <attr name="itemPadding" format="dimension"/>
+		 <!--设置未读数字体大小-->
+        <attr name="unreadTextSize" format="dimension"/>
+        <!--设置提示消息字体大小-->
+        <attr name="msgTextSize" format="dimension"/>
 
 #### 布局文件中配置
 
@@ -94,33 +128,6 @@
 	</LinearLayout>
 
 
-#### BottomBarItem属性介绍
-
-        <!--默认状态下的图标-->
-        <attr name="iconNormal" format="reference"/>
-        <!--选中状态下的图标-->
-        <attr name="iconSelected" format="reference"/>
-        <!--底部文字-->
-        <attr name="itemText" format="string"/>
-        <!--文字大小-->
-        <attr name="itemTextSize" format="dimension"/>
-        <!--默认状态下的文字颜色-->
-        <attr name="textColorNormal" format="color"/>
-        <!--选中状态下的文字颜色-->
-        <attr name="textColorSelected" format="color"/>
-        <!--文字和图标的顶部距离-->
-        <attr name="itemMarginTop" format="dimension"/>
-        <!--是否开启触摸背景效果-->
-        <attr name="openTouchBg" format="boolean"/>
-        <!--设置触摸背景-->
-        <attr name="touchDrawable" format="reference"/>
-        <!--设置图标的宽度-->
-        <attr name="iconWidth" format="dimension"/>
-        <!--设置图标的高度-->
-        <attr name="iconHeight" format="dimension"/>
-        <!--设置BottomBarItem的padding-->
-        <attr name="itemPadding" format="dimension"/>
-
 #### java文件中设置
 
 找过对应的ViewPager和BottomBarLayout,为ViewPager设置Adapter，然后为BottomBarLayout设置ViewPager
@@ -148,6 +155,22 @@
                    //do something
             }
         });
+
+#### 显示未读数、提示小红点、提示消息
+
+	mBottomBarLayout.setUnread(0,20);//设置第一个页签的未读数为20
+    mBottomBarLayout.setUnread(1,101);//设置第二个页签的未读书
+    mBottomBarLayout.showNotify(2);//设置第三个页签显示提示的小红点
+    mBottomBarLayout.setMsg(3,"NEW");//设置第四个页签显示NEW提示文字
+
+当设置的未读数小于或等于0时，消失未读数的小红点将会消失；  
+当未读数为1-99时，则显示对应的数字；  
+当未读数大于99时，显示99+；  
+
+#### 隐藏提示小红点、提示消息
+
+	mBottomBarLayout.hideNotify(2);//隐藏第三个页签显示提示的小红点
+    mBottomBarLayout.hideMsg(3);//隐藏第四个页签显示的提示文字
 
 #### BottomBarItem的介绍
 &emsp;&emsp;BottomBarItem继承于LinearLayout，其子View有显示图标的ImageView和展示文字的TextView,分别可以通过getImageView()和getTextView()方法获取到对应的子控件。github上不少底部导航栏的控件都没能获取到对应的子控件，所以在需要对子控件进行操作的时候极不方便，有一些的思路并不是用ImageView和TextView，而是用绘制的，所以也不能获取到对应的显示图标的控件或展示文字的控件，造成无法获取到该控件，无法进行一些业务上的操作，比如类似今日头条的底部的首页，点击首页的页签，会更换成加载中的图标，执行旋转动画，BottomBarLayout可以轻松地做到这个需求。
@@ -233,7 +256,7 @@
 打开app的module中的build.gradle，在dependencies{}中，添加依赖，如下：
 
     dependencies {
-	        compile 'com.github.chaychan:BottomBarLayout:1.0.2'
+	        compile 'com.github.chaychan:BottomBarLayout:1.0.4'
 	}
 
 
