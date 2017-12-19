@@ -88,7 +88,6 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     public void onPageSelected(int position) {
         resetState();
         mItemViews.get(position).setStatus(true);
-        mViewPager.setCurrentItem(position, mSmoothScroll);
         if (onItemSelectedListener != null){
             onItemSelectedListener.onItemSelected(getBottomItem(position),position);
         }
@@ -111,17 +110,11 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         @Override
         public void onClick(View v) {
             //回调点击的位置
-            if (onItemSelectedListener != null) {
+            if (onItemSelectedListener != null && currentIndex == mCurrentItem) {
                 onItemSelectedListener.onItemSelected(getBottomItem(currentIndex),currentIndex);
             }
 
-            //点击前先重置所有按钮的状态
-            resetState();
-            mItemViews.get(currentIndex).setStatus(true);//设置为选中状态
-            //不能使用平滑滚动，否者颜色改变会乱
             mViewPager.setCurrentItem(currentIndex, mSmoothScroll);
-            //点击是保存当前按钮索引
-            mCurrentItem = currentIndex;
         }
     }
 
