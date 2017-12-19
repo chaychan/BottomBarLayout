@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -74,6 +75,7 @@ public class MainActivity extends FragmentActivity {
         mBottomBarLayout.setOnItemSelectedListener(new BottomBarLayout.OnItemSelectedListener() {
             @Override
             public void onItemSelected(final BottomBarItem bottomBarItem, int position) {
+                Log.i("MainActivity","position: " + position);
                 if (position == 0){
                     //如果是第一个，即首页
                     if (mBottomBarLayout.getCurrentItem() == position){
