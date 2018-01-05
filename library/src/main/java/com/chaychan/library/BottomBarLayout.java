@@ -43,14 +43,10 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         mSmoothScroll = ta.getBoolean(R.styleable.BottomBarLayout_smoothScroll,true);
         ta.recycle();
 
-        setOrientation(HORIZONTAL);
     }
 
     @Override
     public void setOrientation(int orientation) {
-        if (LinearLayout.VERTICAL == orientation) {
-            throw new IllegalArgumentException("BottomBarLayout only supports Horizontal Orientation.");
-        }
         super.setOrientation(orientation);
     }
 
