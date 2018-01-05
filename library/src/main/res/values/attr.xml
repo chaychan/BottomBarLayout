@@ -29,5 +29,10 @@
         <attr name="unreadTextSize" format="dimension"/>
         <!--设置提示消息字体大小-->
         <attr name="msgTextSize" format="dimension"/>
+        <!--设置未读数组阈值 大于阈值的数字将显示为 n+ n为设置的阈值-->
+        <attr name="unreadThreshold" format="integer"/>
+    </declare-styleable>
+    <declare-styleable name="BottomBarLayout">
+        <attr name="smoothScroll" format="boolean"/>
     </declare-styleable>
 </resources>

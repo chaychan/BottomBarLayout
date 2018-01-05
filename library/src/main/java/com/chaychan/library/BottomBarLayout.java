@@ -1,6 +1,7 @@
 package com.chaychan.library;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
@@ -38,6 +39,9 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
 
     public BottomBarLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.BottomBarLayout);
+        mSmoothScroll = ta.getBoolean(R.styleable.BottomBarLayout_smoothScroll,true);
+        ta.recycle();
 
         setOrientation(HORIZONTAL);
     }
