@@ -39,14 +39,10 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     public BottomBarLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        setOrientation(HORIZONTAL);
     }
 
     @Override
     public void setOrientation(int orientation) {
-        if (LinearLayout.VERTICAL == orientation) {
-            throw new IllegalArgumentException("BottomBarLayout only supports Horizontal Orientation.");
-        }
         super.setOrientation(orientation);
     }
 
