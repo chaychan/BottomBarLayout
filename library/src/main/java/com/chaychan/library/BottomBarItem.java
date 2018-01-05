@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 
 /**
  * @author ChayChan
@@ -45,7 +47,7 @@ public class BottomBarItem extends LinearLayout {
 
     private int mUnreadTextSize = 10; //未读数默认字体大小10sp
     private int mMsgTextSize = 6; //消息默认字体大小6sp
-
+    private int unreadNumThreshold = 99;
 
     public BottomBarItem(Context context) {
         this(context, null);
@@ -66,7 +68,7 @@ public class BottomBarItem extends LinearLayout {
         mIconSelectedResourceId = ta.getResourceId(R.styleable.BottomBarItem_iconSelected, -1);
 
         mText = ta.getString(R.styleable.BottomBarItem_itemText);
-        mTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemTextSize, UIUtils.sp2px(mContext,mTextSize));
+        mTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemTextSize, UIUtils.sp2px(mContext, mTextSize));
 
         mTextColorNormal = ta.getColor(R.styleable.BottomBarItem_textColorNormal, mTextColorNormal);
         mTextColorSelected = ta.getColor(R.styleable.BottomBarItem_textColorSelected, mTextColorSelected);
@@ -80,8 +82,9 @@ public class BottomBarItem extends LinearLayout {
         mIconHeight = ta.getDimensionPixelSize(R.styleable.BottomBarItem_iconHeight, 0);
         mItemPadding = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemPadding, 0);
 
-        mUnreadTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_unreadTextSize, UIUtils.sp2px(mContext,mUnreadTextSize));
-        mMsgTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_msgTextSize, UIUtils.sp2px(mContext,mMsgTextSize));
+        mUnreadTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_unreadTextSize, UIUtils.sp2px(mContext, mUnreadTextSize));
+        mMsgTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_msgTextSize, UIUtils.sp2px(mContext, mMsgTextSize));
+        unreadNumThreshold = ta.getInteger(R.styleable.BottomBarItem_unreadThreshold,99);
 
         ta.recycle();
 
@@ -101,7 +104,7 @@ public class BottomBarItem extends LinearLayout {
             throw new IllegalStateException("您还没有设置选中状态下的图标，请指定iconSelected的图标");
         }
 
-        if (mOpenTouchBg && mTouchDrawable == null){
+        if (mOpenTouchBg && mTouchDrawable == null) {
             //如果有开启触摸背景效果但是没有传对应的drawable
             throw new IllegalStateException("开启了触摸效果，但是没有指定touchDrawable");
         }
@@ -112,9 +115,9 @@ public class BottomBarItem extends LinearLayout {
         setGravity(Gravity.CENTER);
 
         View view = View.inflate(mContext, R.layout.item_bottom_bar, null);
-        if (mItemPadding != 0){
+        if (mItemPadding != 0) {
             //如果有设置item的padding
-            view.setPadding(mItemPadding,mItemPadding,mItemPadding,mItemPadding);
+            view.setPadding(mItemPadding, mItemPadding, mItemPadding, mItemPadding);
         }
         mImageView = (ImageView) view.findViewById(R.id.iv_icon);
         mTvUnread = (TextView) view.findViewById(R.id.tv_unred_num);
@@ -124,7 +127,7 @@ public class BottomBarItem extends LinearLayout {
 
         mImageView.setImageResource(mIconNormalResourceId);
 
-        if (mIconWidth != 0 && mIconHeight != 0){
+        if (mIconWidth != 0 && mIconHeight != 0) {
             //如果有设置图标的宽度和高度，则设置ImageView的宽高
             FrameLayout.LayoutParams imageLayoutParams = (FrameLayout.LayoutParams) mImageView.getLayoutParams();
             imageLayoutParams.width = mIconWidth;
@@ -132,9 +135,9 @@ public class BottomBarItem extends LinearLayout {
             mImageView.setLayoutParams(imageLayoutParams);
         }
 
-        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mTextSize);//设置底部文字字体大小
-        mTvUnread.setTextSize(TypedValue.COMPLEX_UNIT_PX,mUnreadTextSize);//设置未读数的字体大小
-        mTvMsg.setTextSize(TypedValue.COMPLEX_UNIT_PX,mMsgTextSize);//设置提示文字的字体大小
+        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);//设置底部文字字体大小
+        mTvUnread.setTextSize(TypedValue.COMPLEX_UNIT_PX, mUnreadTextSize);//设置未读数的字体大小
+        mTvMsg.setTextSize(TypedValue.COMPLEX_UNIT_PX, mMsgTextSize);//设置提示文字的字体大小
 
         mTextView.setTextColor(mTextColorNormal);//设置底部文字字体颜色
         mTextView.setText(mText);//设置标签文字
@@ -143,7 +146,7 @@ public class BottomBarItem extends LinearLayout {
         textLayoutParams.topMargin = mMarginTop;
         mTextView.setLayoutParams(textLayoutParams);
 
-        if (mOpenTouchBg){
+        if (mOpenTouchBg) {
             //如果有开启触摸背景
             setBackground(mTouchDrawable);
         }
@@ -167,12 +170,12 @@ public class BottomBarItem extends LinearLayout {
         this.mIconSelectedResourceId = mIconSelectedResourceId;
     }
 
-    public void setStatus(boolean isSelected){
-        mImageView.setImageResource(isSelected?mIconSelectedResourceId:mIconNormalResourceId);
-        mTextView.setTextColor(isSelected?mTextColorSelected:mTextColorNormal);
+    public void setStatus(boolean isSelected) {
+        mImageView.setImageResource(isSelected ? mIconSelectedResourceId : mIconNormalResourceId);
+        mTextView.setTextColor(isSelected ? mTextColorSelected : mTextColorNormal);
     }
 
-    private void setTvVisiable(TextView tv){
+    private void setTvVisiable(TextView tv) {
         //都设置为不可见
         mTvUnread.setVisibility(GONE);
         mTvMsg.setVisibility(GONE);
@@ -181,34 +184,47 @@ public class BottomBarItem extends LinearLayout {
         tv.setVisibility(VISIBLE);//设置为可见
     }
 
+    public int getUnreadNumThreshold() {
+        return unreadNumThreshold;
+    }
+
+    public void setUnreadNumThreshold(int unreadNumThreshold) {
+        this.unreadNumThreshold = unreadNumThreshold;
+    }
+
     /**
      * 设置未读数
-     * @param unreadNum 小于等于0则隐藏，大于0小于99则显示对应数字，超过99显示99+
+     *
+     * @param unreadNum 小于等于{@link com.chaychan.library.BottomBarItem#unreadNumThreshold}则隐藏，
+     *                  大于0小于{@link com.chaychan.library.BottomBarItem#unreadNumThreshold}则显示对应数字，
+     *                  超过{@link com.chaychan.library.BottomBarItem#unreadNumThreshold}
+     *                  显示{@link com.chaychan.library.BottomBarItem#unreadNumThreshold}+
      */
-    public void setUnreadNum(int unreadNum){
+    public void setUnreadNum(int unreadNum) {
         setTvVisiable(mTvUnread);
-        if (unreadNum <= 0){
+        if (unreadNum <= 0) {
             mTvUnread.setVisibility(GONE);
-        }else if (unreadNum <= 99){
+        } else if (unreadNum <= unreadNumThreshold) {
             mTvUnread.setText(String.valueOf(unreadNum));
-        }else{
-            mTvUnread.setText("99+");
+        } else {
+            mTvUnread.setText(String.format(Locale.CHINA, "%d+", unreadNum));
         }
     }
-    public void setMsg(String msg){
+
+    public void setMsg(String msg) {
         setTvVisiable(mTvMsg);
         mTvMsg.setText(msg);
     }
 
-    public void hideMsg(){
+    public void hideMsg() {
         mTvMsg.setVisibility(GONE);
     }
 
-    public void showNotify(){
+    public void showNotify() {
         setTvVisiable(mTvNotify);
     }
 
-    public void hideNotify(){
+    public void hideNotify() {
         mTvNotify.setVisibility(GONE);
     }
 }
