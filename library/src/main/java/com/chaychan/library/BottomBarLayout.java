@@ -119,11 +119,11 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     }
 
     /**
-     * 重置所有按钮的状态
+     * 重置当前按钮的状态
      */
     private void resetState() {
-        for (int i = 0; i < mChildCount; i++) {
-            mItemViews.get(i).setStatus(false);
+        if (mCurrentItem < mItemViews.size()){
+            mItemViews.get(mCurrentItem).setStatus(false);
         }
     }
 

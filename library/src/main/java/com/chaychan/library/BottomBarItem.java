@@ -171,7 +171,7 @@ public class BottomBarItem extends LinearLayout {
     }
 
     public void setStatus(boolean isSelected) {
-        mImageView.setImageResource(isSelected ? mIconSelectedResourceId : mIconNormalResourceId);
+        mImageView.setImageDrawable(getResources().getDrawable(isSelected ? mIconSelectedResourceId : mIconNormalResourceId));
         mTextView.setTextColor(isSelected ? mTextColorSelected : mTextColorNormal);
     }
 
