@@ -160,6 +160,8 @@
 
     mBottomBarLayout.setSmoothScroll(true);
 
+也可以在布局文件中指定BottomBarLayout的smoothScroll属性为true
+
 开启后效果如下:
 
 ![](./intro_img/display2.gif)
@@ -183,6 +185,9 @@
 当设置的未读数小于或等于0时，消失未读数的小红点将会消失；  
 当未读数为1-99时，则显示对应的数字；  
 当未读数大于99时，显示99+；  
+
+#### 设置未读数阈值
+&emsp;&emsp; 未读数的阈值可以指定BottomBarItem的unreadThreshold属性设置，默认该值为99，如设置  app:unreadThreshold="999" ,	若未读数超过该值，则显示"999+"。
 
 #### 隐藏提示小红点、提示消息
 
