@@ -50,10 +50,12 @@
         <attr name="iconHeight" format="dimension"/>
         <!--设置BottomBarItem的padding-->
         <attr name="itemPadding" format="dimension"/>
-		 <!--设置未读数字体大小-->
+        <!--设置未读数字体大小-->
         <attr name="unreadTextSize" format="dimension"/>
         <!--设置提示消息字体大小-->
         <attr name="msgTextSize" format="dimension"/>
+        <!--设置未读数组阈值 大于阈值的数字将显示为 n+ n为设置的阈值-->
+        <attr name="unreadThreshold" format="integer"/>
 
 #### 布局文件中配置
 
@@ -271,8 +273,13 @@
 打开app的module中的build.gradle，在dependencies{}中，添加依赖，如下：
 
     dependencies {
-	        compile 'com.github.chaychan:BottomBarLayout:1.0.7'
+	        compile 'com.github.chaychan:BottomBarLayout:1.0.7' //建议使用最新版本
 	}
+
+
+最新发布的版本可以查看 
+
+[https://github.com/chaychan/BottomBarLayout/releases](https://github.com/chaychan/BottomBarLayout/releases)
 
 
 好了，到这里BottomBarLayout的介绍就到此为止了，之所以封装这个控件主要是为了方便开发，希望可以帮助到更多人，如果大家有什么想法或者意见不妨向我提出，我会不断完善BottomBarLayout的。
