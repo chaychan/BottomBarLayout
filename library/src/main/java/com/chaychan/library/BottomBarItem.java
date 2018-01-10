@@ -207,7 +207,7 @@ public class BottomBarItem extends LinearLayout {
         } else if (unreadNum <= unreadNumThreshold) {
             mTvUnread.setText(String.valueOf(unreadNum));
         } else {
-            mTvUnread.setText(String.format(Locale.CHINA, "%d+", unreadNum));
+            mTvUnread.setText(String.format(Locale.CHINA, "%d+", unreadNumThreshold));
         }
     }
 
