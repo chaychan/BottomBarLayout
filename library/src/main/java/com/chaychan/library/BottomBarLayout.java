@@ -40,7 +40,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     public BottomBarLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.BottomBarLayout);
-        mSmoothScroll = ta.getBoolean(R.styleable.BottomBarLayout_smoothScroll,true);
+        mSmoothScroll = ta.getBoolean(R.styleable.BottomBarLayout_smoothScroll,false);
         ta.recycle();
 
     }
@@ -50,8 +50,8 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         super.setOrientation(orientation);
     }
 
-    public void setViewPager(ViewPager mViewPager) {
-        this.mViewPager = mViewPager;
+    public void setViewPager(ViewPager viewPager) {
+        this.mViewPager = viewPager;
         init();
     }
 
@@ -178,8 +178,8 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         return mCurrentItem;
     }
 
-    public void setSmoothScroll(boolean mSmoothScroll) {
-        this.mSmoothScroll = mSmoothScroll;
+    public void setSmoothScroll(boolean smoothScroll) {
+        this.mSmoothScroll = smoothScroll;
     }
 
     public BottomBarItem getBottomItem(int position){
