@@ -289,3 +289,17 @@
 
 好了，到这里BottomBarLayout的介绍就到此为止了，之所以封装这个控件主要是为了方便开发，希望可以帮助到更多人，如果大家有什么想法或者意见不妨向我提出，我会不断完善BottomBarLayout的。
 
+
+#### 支持和鼓励
+
+如果觉得我的项目对你有所帮助的话，不妨打赏一下吧！这样我会更加有动力去完善好这个项目：
+
+微信赞赏：
+
+![](http://orondz6hn.bkt.clouddn.com/transfer_code/wechat_transfer.jpg)         
+
+
+支付宝赞赏：
+
+![](http://orondz6hn.bkt.clouddn.com/transfer_code/alipay_code.jpg)
+
