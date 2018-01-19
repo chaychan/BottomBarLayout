@@ -299,7 +299,3 @@
 ![](http://orondz6hn.bkt.clouddn.com/transfer_code/wechat_transfer.jpg)         
 
 
-支付宝赞赏：
-
-![](http://orondz6hn.bkt.clouddn.com/transfer_code/alipay_code.jpg)
-
