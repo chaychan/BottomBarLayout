@@ -71,7 +71,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
                 //设置点击监听
                 bottomBarItem.setOnClickListener(new MyOnClickListener(i));
             } else {
-                throw new IllegalArgumentException("AlphaIndicator的子View必须是AlphaView");
+                throw new IllegalArgumentException("BottomBarLayout的子View必须是BottomBarItem");
             }
         }
 
