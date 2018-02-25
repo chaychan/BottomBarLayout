@@ -128,8 +128,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     }
 
     public void setCurrentItem(int currentItem) {
-        mCurrentItem = currentItem;
-        mViewPager.setCurrentItem(mCurrentItem,mSmoothScroll);
+        mViewPager.setCurrentItem(currentItem,mSmoothScroll);
     }
 
     /**
