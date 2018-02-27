@@ -7,6 +7,14 @@
 
 ![](./intro_img/4.png)
 
+### V1.1.1版本更新说明（2018-01-05）
+
+- 修复一定要设置ViewPager的问题，修改成可设置或不设置；
+
+- 修改点击回调，回调多一个previousPosition（上个页签的位置）
+
+- 添加两种使用方式的demo演示
+
 
 ### V1.0.7版本更新说明（2018-01-05）
 
@@ -278,7 +286,7 @@
 打开app的module中的build.gradle，在dependencies{}中，添加依赖，如下：
 
     dependencies {
-	        compile 'com.github.chaychan:BottomBarLayout:1.1.0' //建议使用最新版本
+	        compile 'com.github.chaychan:BottomBarLayout:1.1.1' //建议使用最新版本
 	}
 
 
