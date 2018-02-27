@@ -42,7 +42,12 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.BottomBarLayout);
         mSmoothScroll = ta.getBoolean(R.styleable.BottomBarLayout_smoothScroll,false);
         ta.recycle();
+    }
 
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        init();
     }
 
     @Override
@@ -56,14 +61,14 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     }
 
     private void init() {
-        if (mViewPager == null) {
-            throw new IllegalArgumentException("参数不能为空");
+        mChildCount = getChildCount();
+
+        if (mViewPager != null) {
+            if (mViewPager.getAdapter().getCount() != mChildCount) {
+                throw new IllegalArgumentException("LinearLayout的子View数量必须和ViewPager条目数量一致");
+            }
         }
 
-        mChildCount = getChildCount();
-        if (mViewPager.getAdapter().getCount() != mChildCount) {
-            throw new IllegalArgumentException("LinearLayout的子View数量必须和ViewPager条目数量一致");
-        }
         for (int i = 0; i < mChildCount; i++) {
             if (getChildAt(i) instanceof BottomBarItem) {
                 BottomBarItem bottomBarItem = (BottomBarItem) getChildAt(i);
@@ -76,7 +81,10 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         }
 
         mItemViews.get(mCurrentItem).setStatus(true);//设置选中项
-        mViewPager.setOnPageChangeListener(this);
+
+        if (mViewPager != null){
+            mViewPager.setOnPageChangeListener(this);
+        }
     }
 
     @Override
@@ -89,7 +97,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         resetState();
         mItemViews.get(position).setStatus(true);
         if (onItemSelectedListener != null){
-            onItemSelectedListener.onItemSelected(getBottomItem(position),position);
+            onItemSelectedListener.onItemSelected(getBottomItem(position),mCurrentItem,position);
         }
         mCurrentItem = position;//记录当前位置
     }
@@ -110,12 +118,31 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         @Override
         public void onClick(View v) {
             //回调点击的位置
-            if (onItemSelectedListener != null && currentIndex == mCurrentItem) {
-                onItemSelectedListener.onItemSelected(getBottomItem(currentIndex),currentIndex);
-            }
+            if(mViewPager != null){
+                //有设置viewPager
+                if (currentIndex == mCurrentItem){
+                    //如果还是同个页签，使用setCurrentItem不会回调OnPageSelecte(),所以在此处需要回调点击监听
+                    if (onItemSelectedListener != null) {
+                        onItemSelectedListener.onItemSelected(getBottomItem(currentIndex),mCurrentItem,currentIndex);
+                    }
+                }else{
+                    mViewPager.setCurrentItem(currentIndex, mSmoothScroll);
+                }
+            }else{
+                //没有设置viewPager
+                if (onItemSelectedListener != null) {
+                    onItemSelectedListener.onItemSelected(getBottomItem(currentIndex),mCurrentItem,currentIndex);
+                }
 
-            mViewPager.setCurrentItem(currentIndex, mSmoothScroll);
+                updateTabState(currentIndex);
+            }
         }
+    }
+
+    private void updateTabState(int position){
+        resetState();
+        mCurrentItem = position;
+        mItemViews.get(mCurrentItem).setStatus(true);
     }
 
     /**
@@ -128,7 +155,11 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     }
 
     public void setCurrentItem(int currentItem) {
-        mViewPager.setCurrentItem(currentItem,mSmoothScroll);
+        if (mViewPager != null){
+            mViewPager.setCurrentItem(currentItem,mSmoothScroll);
+        }else{
+            updateTabState(currentItem);
+        }
     }
 
     /**
@@ -217,7 +248,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     private OnItemSelectedListener onItemSelectedListener;
 
     public interface OnItemSelectedListener {
-        void onItemSelected(BottomBarItem bottomBarItem, int position);
+        void onItemSelected(BottomBarItem bottomBarItem, int previousPosition,int currentPosition);
     }
 
     public void setOnItemSelectedListener(OnItemSelectedListener onItemSelectedListener) {
