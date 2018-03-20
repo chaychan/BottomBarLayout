@@ -281,7 +281,7 @@ Add the jitpack repository address in allprojects{} in build.gradle in the proje
 Open the build.gradle in the app's module, add dependencies in dependencies {} as follows:
 
     dependencies {
-	        compile 'com.github.chaychan:BottomBarLayout:1.1.1' //It is recommended to use the latest version
+	        compile 'com.github.chaychan:BottomBarLayout:1.1.2' //It is recommended to use the latest version
 	}
 
 
