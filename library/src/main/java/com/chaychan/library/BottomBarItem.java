@@ -3,6 +3,7 @@ package com.chaychan.library;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -31,6 +32,7 @@ public class BottomBarItem extends LinearLayout {
     private int mTextSize = 12;//文字大小 默认为12sp
     private int mTextColorNormal = 0xFF999999;    //描述文本的默认显示颜色
     private int mTextColorSelected = 0xFF46C01B;  //述文本的默认选中显示颜色
+    private int mWhiteColor = 0xFFFFFFFF;  //白色
     private int mMarginTop = 0;//文字和图标的距离,默认0dp
     private boolean mOpenTouchBg = false;// 是否开启触摸背景，默认关闭
     private Drawable mTouchDrawable;//触摸时的背景
@@ -47,7 +49,12 @@ public class BottomBarItem extends LinearLayout {
 
     private int mUnreadTextSize = 10; //未读数默认字体大小10sp
     private int mMsgTextSize = 6; //消息默认字体大小6sp
-    private int unreadNumThreshold = 99;
+    private int unreadNumThreshold = 99;//未读数阈值
+    private int mUnreadTextColor;//未读数字体颜色
+    private Drawable mUnreadTextBg;
+    private int mMsgTextColor;
+    private Drawable mMsgTextBg;
+    private Drawable mNotifyPointBg;
 
     public BottomBarItem(Context context) {
         this(context, null);
@@ -64,6 +71,16 @@ public class BottomBarItem extends LinearLayout {
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.BottomBarItem);
 
+        initAttrs(ta); //初始化属性
+
+        ta.recycle();
+
+        checkValues();//检查值是否合法
+
+        init();//初始化相关操作
+    }
+
+    private void initAttrs(TypedArray ta) {
         mIconNormalResourceId = ta.getResourceId(R.styleable.BottomBarItem_iconNormal, -1);
         mIconSelectedResourceId = ta.getResourceId(R.styleable.BottomBarItem_iconSelected, -1);
 
@@ -83,13 +100,16 @@ public class BottomBarItem extends LinearLayout {
         mItemPadding = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemPadding, 0);
 
         mUnreadTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_unreadTextSize, UIUtils.sp2px(mContext, mUnreadTextSize));
+        mUnreadTextColor = ta.getColor(R.styleable.BottomBarItem_unreadTextColor, 0xFFFFFFFF);
+        mUnreadTextBg = ta.getDrawable(R.styleable.BottomBarItem_unreadTextBg);
+
         mMsgTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_msgTextSize, UIUtils.sp2px(mContext, mMsgTextSize));
+        mMsgTextColor = ta.getColor(R.styleable.BottomBarItem_msgTextColor, 0xFFFFFFFF);
+        mMsgTextBg = ta.getDrawable(R.styleable.BottomBarItem_msgTextBg);
+
+        mNotifyPointBg = ta.getDrawable(R.styleable.BottomBarItem_notifyPointBg);
+
         unreadNumThreshold = ta.getInteger(R.styleable.BottomBarItem_unreadThreshold,99);
-
-        ta.recycle();
-
-        checkValues();
-        init();
     }
 
     /**
@@ -108,22 +128,25 @@ public class BottomBarItem extends LinearLayout {
             //如果有开启触摸背景效果但是没有传对应的drawable
             throw new IllegalStateException("开启了触摸效果，但是没有指定touchDrawable");
         }
+
+        if (mUnreadTextBg == null){
+            mUnreadTextBg = getResources().getDrawable(R.drawable.shape_unread);
+        }
+
+        if (mMsgTextBg == null){
+            mMsgTextBg = getResources().getDrawable(R.drawable.shape_msg);
+        }
+
+        if (mNotifyPointBg == null){
+            mNotifyPointBg = getResources().getDrawable(R.drawable.shape_notify_point);
+        }
     }
 
     private void init() {
         setOrientation(VERTICAL);
         setGravity(Gravity.CENTER);
 
-        View view = View.inflate(mContext, R.layout.item_bottom_bar, null);
-        if (mItemPadding != 0) {
-            //如果有设置item的padding
-            view.setPadding(mItemPadding, mItemPadding, mItemPadding, mItemPadding);
-        }
-        mImageView = (ImageView) view.findViewById(R.id.iv_icon);
-        mTvUnread = (TextView) view.findViewById(R.id.tv_unred_num);
-        mTvMsg = (TextView) view.findViewById(R.id.tv_msg);
-        mTvNotify = (TextView) view.findViewById(R.id.tv_point);
-        mTextView = (TextView) view.findViewById(R.id.tv_text);
+        View view = initView();
 
         mImageView.setImageResource(mIconNormalResourceId);
 
@@ -136,8 +159,16 @@ public class BottomBarItem extends LinearLayout {
         }
 
         mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);//设置底部文字字体大小
+
         mTvUnread.setTextSize(TypedValue.COMPLEX_UNIT_PX, mUnreadTextSize);//设置未读数的字体大小
+        mTvUnread.setTextColor(mUnreadTextColor);//设置未读数字体颜色
+        mTvUnread.setBackground(mUnreadTextBg);//设置未读数背景
+
         mTvMsg.setTextSize(TypedValue.COMPLEX_UNIT_PX, mMsgTextSize);//设置提示文字的字体大小
+        mTvMsg.setTextColor(mMsgTextColor);//设置提示文字的字体颜色
+        mTvMsg.setBackground(mMsgTextBg);//设置提示文字的背景颜色
+
+        mTvNotify.setBackground(mNotifyPointBg);//设置提示点的背景颜色
 
         mTextView.setTextColor(mTextColorNormal);//设置底部文字字体颜色
         mTextView.setText(mText);//设置标签文字
@@ -152,6 +183,21 @@ public class BottomBarItem extends LinearLayout {
         }
 
         addView(view);
+    }
+
+    @NonNull
+    private View initView() {
+        View view = View.inflate(mContext, R.layout.item_bottom_bar, null);
+        if (mItemPadding != 0) {
+            //如果有设置item的padding
+            view.setPadding(mItemPadding, mItemPadding, mItemPadding, mItemPadding);
+        }
+        mImageView = (ImageView) view.findViewById(R.id.iv_icon);
+        mTvUnread = (TextView) view.findViewById(R.id.tv_unred_num);
+        mTvMsg = (TextView) view.findViewById(R.id.tv_msg);
+        mTvNotify = (TextView) view.findViewById(R.id.tv_point);
+        mTextView = (TextView) view.findViewById(R.id.tv_text);
+        return view;
     }
 
     public ImageView getImageView() {

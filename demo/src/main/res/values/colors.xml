@@ -8,4 +8,5 @@
     <color name="tab_normal_color">#515051</color>
     <color name="tab_selected_color">#D33D3C</color>
 
+    <color name="unreadTextColor">#00ff00</color>
 </resources>

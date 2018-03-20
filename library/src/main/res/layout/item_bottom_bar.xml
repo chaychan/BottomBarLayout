@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="14dp"
-            android:background="@drawable/shape_unread"
+            android:background="@drawable/shape_msg"
             android:gravity="center"
             android:text="NEW"
             android:textColor="@color/white"

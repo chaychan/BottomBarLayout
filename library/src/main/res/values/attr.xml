@@ -5,6 +5,7 @@
         <attr name="iconNormal" format="reference"/>
         <!--选中状态下的图标-->
         <attr name="iconSelected" format="reference"/>
+
         <!--底部文字-->
         <attr name="itemText" format="string"/>
         <!--文字大小-->
@@ -13,22 +14,40 @@
         <attr name="textColorNormal" format="color"/>
         <!--选中状态下的文字颜色-->
         <attr name="textColorSelected" format="color"/>
+
         <!--文字和图标的顶部距离-->
         <attr name="itemMarginTop" format="dimension"/>
+
         <!--是否开启触摸背景效果-->
         <attr name="openTouchBg" format="boolean"/>
         <!--设置触摸背景-->
         <attr name="touchDrawable" format="reference"/>
+
         <!--设置图标的宽度-->
         <attr name="iconWidth" format="dimension"/>
         <!--设置图标的高度-->
         <attr name="iconHeight" format="dimension"/>
+
         <!--设置BottomBarItem的padding-->
         <attr name="itemPadding" format="dimension"/>
+
         <!--设置未读数字体大小-->
         <attr name="unreadTextSize" format="dimension"/>
+        <!--设置未读数字体颜色-->
+        <attr name="unreadTextColor" format="reference"/>
+        <!--设置未读数背景色-->
+        <attr name="unreadTextBg" format="reference"/>
+
         <!--设置提示消息字体大小-->
         <attr name="msgTextSize" format="dimension"/>
+        <!--设置提示消息字体颜色-->
+        <attr name="msgTextColor" format="reference"/>
+        <!--设置提示消息背景-->
+        <attr name="msgTextBg" format="reference"/>
+
+        <!--设置提示点背景-->
+        <attr name="notifyPointBg" format="reference"/>
+
         <!--设置未读数组阈值 大于阈值的数字将显示为 n+ n为设置的阈值-->
         <attr name="unreadThreshold" format="integer"/>
     </declare-styleable>
