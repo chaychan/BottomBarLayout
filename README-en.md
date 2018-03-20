@@ -11,6 +11,15 @@
 
 ![](./intro_img/4.png)
 
+### V1.1.2 update instructions（2018-03-20）
+
+- Add attributes to modify unread font colors and background
+
+- Add attributes to modify prompt text font colors and background
+
+- Add attributes to modify prompt point background
+
+
 ### V1.1.1 update instructions（2018-02-27）
 
 - Repair must be set up ViewPager problems, can be modified to set or not set；
@@ -76,9 +85,20 @@
 
         <!--Set unread font size-->
         <attr name="unreadTextSize" format="dimension"/>
+ 		<!--Set unread font color-->
+        <attr name="unreadTextColor" format="reference"/>
+        <!--Set unread font background-->
+        <attr name="unreadTextBg" format="reference"/>
 
         <!--Set the message font size-->
         <attr name="msgTextSize" format="dimension"/>
+		<!--Set the message font color-->
+        <attr name="msgTextColor" format="reference"/>
+        <!--Set the message font background-->
+        <attr name="msgTextBg" format="reference"/>
+
+        <!--Set the message prompt point background-->
+        <attr name="notifyPointBg" format="reference"/>
 
         <!--Set the number of unread array thresholds greater than the threshold to be displayed as n + n as the set threshold-->
         <attr name="unreadThreshold" format="integer"/>
@@ -219,6 +239,32 @@ When unread more than 99, it shows 99+;
 
 	mBottomBarLayout.hideNotify(2);//Hide the third page shows the tips of the little red dot
     mBottomBarLayout.hideMsg(3);//Hide the text displayed on the fourth tab
+
+#### Set unread font color
+   
+    app:unreadTextColor="@color/unreadTextColor"
+
+#### Set the unread background
+
+    app:unreadTextBg="@drawable/shape_unread"
+
+Drawable is written as follows:
+
+    <?xml version="1.0" encoding="utf-8"?>
+	<shape xmlns:android="http://schemas.android.com/apk/res/android">
+	    <corners android:radius="20dp" />
+	    <solid android:color="@color/red" />
+	    <padding android:left="4dp" android:right="4dp" android:top="1dp" android:bottom="1dp"/>
+	</shape>
+
+#### Set prompt text font color, background
+
+     app:msgTextColor="@color/msgTextColor"
+     app:msgTextBg="@drawable/shape_msg"
+
+#### Set prompt point background
+
+	 app:notifyPointBg="@drawable/shape_notify_point"
 
 
 #### **How to import**

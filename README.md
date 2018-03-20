@@ -9,6 +9,14 @@
 
 ![](./intro_img/4.png)
 
+### V1.1.2版本更新说明（2018-03-20）
+
+- 添加修改未读数字体颜色和背景的属性
+
+- 添加修改提示文字字体颜色和背景的属性
+
+- 添加修改提示点背景的属性
+
 ### V1.1.1版本更新说明（2018-02-27）
 
 - 修复一定要设置ViewPager的问题，修改成可设置或不设置；
@@ -40,6 +48,7 @@
         <attr name="iconNormal" format="reference"/>
         <!--选中状态下的图标-->
         <attr name="iconSelected" format="reference"/>
+
         <!--底部文字-->
         <attr name="itemText" format="string"/>
         <!--文字大小-->
@@ -48,22 +57,40 @@
         <attr name="textColorNormal" format="color"/>
         <!--选中状态下的文字颜色-->
         <attr name="textColorSelected" format="color"/>
+
         <!--文字和图标的顶部距离-->
         <attr name="itemMarginTop" format="dimension"/>
+
         <!--是否开启触摸背景效果-->
         <attr name="openTouchBg" format="boolean"/>
         <!--设置触摸背景-->
         <attr name="touchDrawable" format="reference"/>
+
         <!--设置图标的宽度-->
         <attr name="iconWidth" format="dimension"/>
         <!--设置图标的高度-->
         <attr name="iconHeight" format="dimension"/>
+
         <!--设置BottomBarItem的padding-->
         <attr name="itemPadding" format="dimension"/>
+
         <!--设置未读数字体大小-->
         <attr name="unreadTextSize" format="dimension"/>
+        <!--设置未读数字体颜色-->
+        <attr name="unreadTextColor" format="reference"/>
+        <!--设置未读数背景色-->
+        <attr name="unreadTextBg" format="reference"/>
+
         <!--设置提示消息字体大小-->
         <attr name="msgTextSize" format="dimension"/>
+        <!--设置提示消息字体颜色-->
+        <attr name="msgTextColor" format="reference"/>
+        <!--设置提示消息背景-->
+        <attr name="msgTextBg" format="reference"/>
+
+        <!--设置提示点背景-->
+        <attr name="notifyPointBg" format="reference"/>
+
         <!--设置未读数组阈值 大于阈值的数字将显示为 n+ n为设置的阈值-->
         <attr name="unreadThreshold" format="integer"/>
 
@@ -204,6 +231,33 @@
 	mBottomBarLayout.hideNotify(2);//隐藏第三个页签显示提示的小红点
     mBottomBarLayout.hideMsg(3);//隐藏第四个页签显示的提示文字
 
+
+#### 设置未读数字体颜色
+   
+    app:unreadTextColor="@color/unreadTextColor"
+
+#### 设置未读数背景
+
+    app:unreadTextBg="@drawable/shape_unread"
+
+drawable的编写如下：
+
+    <?xml version="1.0" encoding="utf-8"?>
+	<shape xmlns:android="http://schemas.android.com/apk/res/android">
+	    <corners android:radius="20dp" />
+	    <solid android:color="@color/red" />
+	    <padding android:left="4dp" android:right="4dp" android:top="1dp" android:bottom="1dp"/>
+	</shape>
+
+#### 设置提示文字字体颜色、背景
+
+     app:msgTextColor="@color/msgTextColor"
+     app:msgTextBg="@drawable/shape_msg"
+
+####设置提示点背景
+
+	 app:notifyPointBg="@drawable/shape_notify_point"
+
 #### BottomBarItem的介绍
 &emsp;&emsp;BottomBarItem继承于LinearLayout，其子View有显示图标的ImageView和展示文字的TextView,分别可以通过getImageView()和getTextView()方法获取到对应的子控件。github上不少底部导航栏的控件都没能获取到对应的子控件，所以在需要对子控件进行操作的时候极不方便，有一些的思路并不是用ImageView和TextView，而是用绘制的，所以也不能获取到对应的显示图标的控件或展示文字的控件，造成无法获取到该控件，无法进行一些业务上的操作，比如类似今日头条的底部的首页，点击首页的页签，会更换成加载中的图标，执行旋转动画，BottomBarLayout可以轻松地做到这个需求。
 
@@ -288,7 +342,7 @@
 打开app的module中的build.gradle，在dependencies{}中，添加依赖，如下：
 
     dependencies {
-	        compile 'com.github.chaychan:BottomBarLayout:1.1.1' //建议使用最新版本
+	        compile 'com.github.chaychan:BottomBarLayout:1.1.2' //建议使用最新版本
 	}
 
 
