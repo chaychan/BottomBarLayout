@@ -7,6 +7,14 @@
 ### 轻量级的底部导航栏
 &emsp;&emsp;目前市场上的App，几乎都有底部页签导航栏，所以我们在开发的时候经常需要用到这个，虽然github上有不少已经封装好的底部导航栏的工具，例如bottombar,alphaIndicator(仿微信滑动渐变底部控件)等，但是这些控件由于功能太多，而且也没有给予详细的介绍文档，所以用起来不是特别容易，有时候我们仅仅只是想要一个简简单单的底部导航，但是又不想去自己在布局中搞一个个LinearLayout或者RadioGroup，然后切换页签的时候更换图标，让ViewPager跳转到对应的页面等一系列繁琐的操作，这时候，你可以使用BottomBarLayout，简简单单就可以实现以下效果：
 
+#### 下载体验
+
+[点击下载体验](https://raw.githubusercontent.com/chaychan/BottomBarLayout/master/apk/demo.apk)
+
+扫码下载：
+
+![](./intro_img/download_qr.png)
+
 
 #### **导入方式**
 

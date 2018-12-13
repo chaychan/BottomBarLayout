@@ -7,6 +7,14 @@ If you feel that my project is helpful to you, please help me to click on the **
 ### Introduction
 &emsp;&emsp;Currently, App on the market almost has a navigation bar at the bottom, so we often need to use this during development. Although there are many tools on the github packaged bottom navigation bar, such as bottombar, alphaIndicator Swipe gradient bottom controls etc., but these controls are not particularly easy to use due to too many functions and no detailed documentation. Sometimes we just want a simple bottom navigation, but we don't want to go One by one in the layout of the LinearLayout or RadioGroup, and then change the tab icon, let ViewPager jump to the corresponding page and a series of tedious operations, this time, you can use BottomBarLayout, simply can achieve the following effect:
 
+#### Apk
+
+[click to download](https://raw.githubusercontent.com/chaychan/BottomBarLayout/master/apk/demo.apk)
+
+or scan the QR code
+
+![](./intro_img/download_qr.png)
+
 
 #### **How to import**
 
