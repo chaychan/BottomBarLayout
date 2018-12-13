@@ -117,7 +117,7 @@ public class DynamicAddItemActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_dynamic, menu);
         return true;
     }
 

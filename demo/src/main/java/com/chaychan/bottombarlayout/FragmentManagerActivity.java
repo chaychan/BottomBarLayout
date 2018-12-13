@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
@@ -136,5 +138,29 @@ public class FragmentManagerActivity extends AppCompatActivity {
         if (animation != null) {
             animation.cancel();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_demo, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_clear_unread:
+                mBottomBarLayout.setUnread(0, 0);
+                mBottomBarLayout.setUnread(1, 0);
+                break;
+            case R.id.action_clear_notify:
+                mBottomBarLayout.hideNotify(2);
+                break;
+            case R.id.action_clear_msg:
+                mBottomBarLayout.hideMsg(3);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

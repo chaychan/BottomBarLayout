@@ -1,7 +1,34 @@
 [中文(Chinese)](https://github.com/chaychan/BottomBarLayout)
 
+### Support
+
+If you feel that my project is helpful to you, please help me to click on the **star** and let more people see it. Thank you!
+
 ### Introduction
 &emsp;&emsp;Currently, App on the market almost has a navigation bar at the bottom, so we often need to use this during development. Although there are many tools on the github packaged bottom navigation bar, such as bottombar, alphaIndicator Swipe gradient bottom controls etc., but these controls are not particularly easy to use due to too many functions and no detailed documentation. Sometimes we just want a simple bottom navigation, but we don't want to go One by one in the layout of the LinearLayout or RadioGroup, and then change the tab icon, let ViewPager jump to the corresponding page and a series of tedious operations, this time, you can use BottomBarLayout, simply can achieve the following effect:
+
+
+#### **How to import**
+
+Add the jitpack repository address in allprojects{} in build.gradle in the project root directory, as follows：
+
+    allprojects {
+	    repositories {
+	        jcenter()
+	        maven { url 'https://jitpack.io' }//Add jitpack warehouse address
+	    }
+	}
+ 
+Open the build.gradle in the app's module, add dependencies in dependencies {} as follows:
+
+    dependencies {
+	        compile 'com.github.chaychan:BottomBarLayout:1.2.0' //It is recommended to use the latest version
+	}
+
+
+The latest version can be viewed
+
+[https://github.com/chaychan/BottomBarLayout/releases](https://github.com/chaychan/BottomBarLayout/releases)
 
 ### Demo
 
@@ -10,6 +37,10 @@
 #### Display unread, show red dot, display message
 
 ![](./intro_img/4.png)
+
+### V1.1.2 update instructions (2018-12-13)
+
+- Support for dynamically adding and removing item
 
 ### V1.1.2 update instructions（2018-03-20）
 
@@ -200,6 +231,38 @@ Find the corresponding ViewPager and BottomBarLayout, set Adapter for ViewPager,
 
 This realizes the bottom navigation bar function
 
+#### Add item dynamically
+
+     for (int i = 0; i < mTitleIds.length; i++) {
+            //create item
+            BottomBarItem item = createBottomBarItem(i);
+            mBottomBarLayout.addItem(item); //addItem
+
+            TabFragment homeFragment = createFragment(mTitleIds[i]);
+            mFragmentList.add(homeFragment);
+    }
+
+
+	 private BottomBarItem createBottomBarItem(int i) {
+        BottomBarItem item = new BottomBarItem.Builder(this)
+                .titleTextSize(8)
+                .titleNormalColor(R.color.tab_normal_color)
+                .titleSelectedColor(R.color.tab_selected_color)
+	//          .openTouchBg(false)
+	//          .marginTop(5)
+	//          .itemPadding(5)
+	//          .unreadNumThreshold(99)
+	//          .unreadTextColor(R.color.white)
+
+                //There are still many properties, please see the methods in the Builder for details.
+                .create(mNormalIconIds[i], mSelectedIconIds[i], getString(mTitleIds[i]));
+        return item;
+    }
+
+#### Remove item
+
+     mBottomBarLayout.removeItem(0);
+
 #### Turn on the slide effect
 
 Tab switch between the closure of the default sliding effect, if you need to open the setSmoothScroll () method can be called by calling BottomBarLayout:
@@ -265,29 +328,6 @@ Drawable is written as follows:
 #### Set prompt point background
 
 	 app:notifyPointBg="@drawable/shape_notify_point"
-
-
-#### **How to import**
-
-Add the jitpack repository address in allprojects{} in build.gradle in the project root directory, as follows：
-
-    allprojects {
-	    repositories {
-	        jcenter()
-	        maven { url 'https://jitpack.io' }//Add jitpack warehouse address
-	    }
-	}
- 
-Open the build.gradle in the app's module, add dependencies in dependencies {} as follows:
-
-    dependencies {
-	        compile 'com.github.chaychan:BottomBarLayout:1.1.2' //It is recommended to use the latest version
-	}
-
-
-The latest version can be viewed
-
-[https://github.com/chaychan/BottomBarLayout/releases](https://github.com/chaychan/BottomBarLayout/releases)
 
 
 Well, here's the introduction of BottomBarLayout stop here, the reason for the package this control is mainly for the convenience of development, hope to help more people, if you have any ideas or comments may wish to put forward to me, I will continue to improve BottomBarLayout of.

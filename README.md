@@ -1,13 +1,44 @@
 [英文(English)](https://github.com/chaychan/BottomBarLayout/blob/master/README-en.md)
 
+### 支持
+
+ 如果觉得我的项目对你有所帮助的话，帮我点下**star** 吧，让更多人的人可以看到，谢谢！
+
 ### 轻量级的底部导航栏
 &emsp;&emsp;目前市场上的App，几乎都有底部页签导航栏，所以我们在开发的时候经常需要用到这个，虽然github上有不少已经封装好的底部导航栏的工具，例如bottombar,alphaIndicator(仿微信滑动渐变底部控件)等，但是这些控件由于功能太多，而且也没有给予详细的介绍文档，所以用起来不是特别容易，有时候我们仅仅只是想要一个简简单单的底部导航，但是又不想去自己在布局中搞一个个LinearLayout或者RadioGroup，然后切换页签的时候更换图标，让ViewPager跳转到对应的页面等一系列繁琐的操作，这时候，你可以使用BottomBarLayout，简简单单就可以实现以下效果：
+
+
+#### **导入方式**
+
+在项目根目录下的build.gradle中的allprojects{}中，添加jitpack仓库地址，如下：
+
+    allprojects {
+	    repositories {
+	        jcenter()
+	        maven { url 'https://jitpack.io' }//添加jitpack仓库地址
+	    }
+	}
+ 
+打开app的module中的build.gradle，在dependencies{}中，添加依赖，如下：
+
+    dependencies {
+	        compile 'com.github.chaychan:BottomBarLayout:1.2.0' //建议使用最新版本
+	}
+
+
+最新发布的版本可以查看 
+
+[https://github.com/chaychan/BottomBarLayout/releases](https://github.com/chaychan/BottomBarLayout/releases)
 
 ![](./intro_img/display1.gif)
 
 #### 显示未读数、提示小红点、提示消息
 
 ![](./intro_img/4.png)
+
+### V1.2.0版本更新说明 (2018-12-13)
+
+- 支持动态添加、移除条目
 
 ### V1.1.2版本更新说明（2018-03-20）
 
@@ -191,6 +222,38 @@
 
 这样就实现底部导航栏功能了
 
+#### 动态添加条目
+
+     for (int i = 0; i < mTitleIds.length; i++) {
+            //创建item
+            BottomBarItem item = createBottomBarItem(i);
+            mBottomBarLayout.addItem(item); //添加条目
+
+            TabFragment homeFragment = createFragment(mTitleIds[i]);
+            mFragmentList.add(homeFragment);
+    }
+
+
+	 private BottomBarItem createBottomBarItem(int i) {
+        BottomBarItem item = new BottomBarItem.Builder(this)
+                .titleTextSize(8)
+                .titleNormalColor(R.color.tab_normal_color)
+                .titleSelectedColor(R.color.tab_selected_color)
+	//          .openTouchBg(false)
+	//          .marginTop(5)
+	//          .itemPadding(5)
+	//          .unreadNumThreshold(99)
+	//          .unreadTextColor(R.color.white)
+
+                //还有很多属性，详情请查看Builder里面的方法
+                .create(mNormalIconIds[i], mSelectedIconIds[i], getString(mTitleIds[i]));
+        return item;
+    }
+
+#### 移除条目
+
+     mBottomBarLayout.removeItem(0);
+
 #### 开启滑动效果
 
 页签之间的切换默认关闭了滑动效果，如果需要开启可以通过调用BottomBarLayout的setSmoothScroll()方法:
@@ -326,29 +389,6 @@ drawable的编写如下：
 
 2.通过BottomBarItem获取到对应页签的ImageView，对其设置旋转动画，执行旋转动画，当点击其他页签或者数据加载完成后，更换回原来的选中图标，停止旋转动画。
 
-
-
-#### **导入方式**
-
-在项目根目录下的build.gradle中的allprojects{}中，添加jitpack仓库地址，如下：
-
-    allprojects {
-	    repositories {
-	        jcenter()
-	        maven { url 'https://jitpack.io' }//添加jitpack仓库地址
-	    }
-	}
- 
-打开app的module中的build.gradle，在dependencies{}中，添加依赖，如下：
-
-    dependencies {
-	        compile 'com.github.chaychan:BottomBarLayout:1.1.2' //建议使用最新版本
-	}
-
-
-最新发布的版本可以查看 
-
-[https://github.com/chaychan/BottomBarLayout/releases](https://github.com/chaychan/BottomBarLayout/releases)
 
 
 好了，到这里BottomBarLayout的介绍就到此为止了，之所以封装这个控件主要是为了方便开发，希望可以帮助到更多人，如果大家有什么想法或者意见不妨向我提出，我会不断完善BottomBarLayout的。

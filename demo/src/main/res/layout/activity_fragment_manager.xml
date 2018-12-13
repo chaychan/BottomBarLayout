@@ -51,7 +51,7 @@
             app:itemTextSize="8sp"
             app:itemMarginTop="-5dp"
             app:openTouchBg="true"
-            app:unreadThreshold="999"
+            app:unreadThreshold="99"
             app:touchDrawable="@drawable/selector_bg"
             />
 

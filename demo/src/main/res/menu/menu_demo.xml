@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_clear_unread"
+        android:title="clearUnread"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_clear_notify"
+        android:title="clearNotify"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_clear_msg"
+        android:title="clearMsg"
+        app:showAsAction="never" />
+</menu>
