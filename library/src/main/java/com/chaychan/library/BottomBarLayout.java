@@ -22,7 +22,6 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     private static final String STATE_INSTANCE = "instance_state";
     private static final String STATE_ITEM = "state_item";
 
-
     private ViewPager mViewPager;
     private int mChildCount;//子条目个数
     private List<BottomBarItem> mItemViews = new ArrayList<>();
@@ -40,7 +39,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     public BottomBarLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.BottomBarLayout);
-        mSmoothScroll = ta.getBoolean(R.styleable.BottomBarLayout_smoothScroll,false);
+        mSmoothScroll = ta.getBoolean(R.styleable.BottomBarLayout_smoothScroll, false);
         ta.recycle();
     }
 
@@ -61,7 +60,11 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     }
 
     private void init() {
+        mItemViews.clear();
         mChildCount = getChildCount();
+        if (mChildCount == 0) {
+            return;
+        }
 
         if (mViewPager != null) {
             if (mViewPager.getAdapter().getCount() != mChildCount) {
@@ -80,10 +83,30 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
             }
         }
 
-        mItemViews.get(mCurrentItem).setStatus(true);//设置选中项
+        if (mCurrentItem < mItemViews.size())
+            mItemViews.get(mCurrentItem).setStatus(true);//设置选中项
 
-        if (mViewPager != null){
+        if (mViewPager != null) {
             mViewPager.setOnPageChangeListener(this);
+        }
+    }
+
+    public void addItem(BottomBarItem item) {
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        layoutParams.weight = 1;
+        item.setLayoutParams(layoutParams);
+        addView(item);
+        init();
+    }
+
+    public void removeItem(int position) {
+        if (position >= 0 && position < mItemViews.size()) {
+            BottomBarItem item = mItemViews.get(position);
+            if (mItemViews.contains(item)) {
+                resetState();
+                removeViewAt(position);
+                init();
+            }
         }
     }
 
@@ -96,8 +119,8 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     public void onPageSelected(int position) {
         resetState();
         mItemViews.get(position).setStatus(true);
-        if (onItemSelectedListener != null){
-            onItemSelectedListener.onItemSelected(getBottomItem(position),mCurrentItem,position);
+        if (onItemSelectedListener != null) {
+            onItemSelectedListener.onItemSelected(getBottomItem(position), mCurrentItem, position);
         }
         mCurrentItem = position;//记录当前位置
     }
@@ -118,20 +141,20 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         @Override
         public void onClick(View v) {
             //回调点击的位置
-            if(mViewPager != null){
+            if (mViewPager != null) {
                 //有设置viewPager
-                if (currentIndex == mCurrentItem){
+                if (currentIndex == mCurrentItem) {
                     //如果还是同个页签，使用setCurrentItem不会回调OnPageSelecte(),所以在此处需要回调点击监听
                     if (onItemSelectedListener != null) {
-                        onItemSelectedListener.onItemSelected(getBottomItem(currentIndex),mCurrentItem,currentIndex);
+                        onItemSelectedListener.onItemSelected(getBottomItem(currentIndex), mCurrentItem, currentIndex);
                     }
-                }else{
+                } else {
                     mViewPager.setCurrentItem(currentIndex, mSmoothScroll);
                 }
-            }else{
+            } else {
                 //没有设置viewPager
                 if (onItemSelectedListener != null) {
-                    onItemSelectedListener.onItemSelected(getBottomItem(currentIndex),mCurrentItem,currentIndex);
+                    onItemSelectedListener.onItemSelected(getBottomItem(currentIndex), mCurrentItem, currentIndex);
                 }
 
                 updateTabState(currentIndex);
@@ -139,7 +162,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         }
     }
 
-    private void updateTabState(int position){
+    private void updateTabState(int position) {
         resetState();
         mCurrentItem = position;
         mItemViews.get(mCurrentItem).setStatus(true);
@@ -149,58 +172,66 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
      * 重置当前按钮的状态
      */
     private void resetState() {
-        if (mCurrentItem < mItemViews.size()){
+        if (mCurrentItem < mItemViews.size()) {
             mItemViews.get(mCurrentItem).setStatus(false);
         }
     }
 
     public void setCurrentItem(int currentItem) {
-        if (mViewPager != null){
-            mViewPager.setCurrentItem(currentItem,mSmoothScroll);
-        }else{
+        if (mViewPager != null) {
+            mViewPager.setCurrentItem(currentItem, mSmoothScroll);
+        } else {
+            if (onItemSelectedListener != null) {
+                onItemSelectedListener.onItemSelected(getBottomItem(currentItem), mCurrentItem, currentItem);
+            }
             updateTabState(currentItem);
         }
     }
 
     /**
      * 设置未读数
-     * @param position 底部标签的下标
+     *
+     * @param position  底部标签的下标
      * @param unreadNum 未读数
      */
-    public void setUnread(int position,int unreadNum){
+    public void setUnread(int position, int unreadNum) {
         mItemViews.get(position).setUnreadNum(unreadNum);
     }
 
     /**
      * 设置提示消息
+     *
      * @param position 底部标签的下标
-     * @param msg 未读数
+     * @param msg      未读数
      */
-    public void setMsg(int position,String msg){
+    public void setMsg(int position, String msg) {
         mItemViews.get(position).setMsg(msg);
     }
 
     /**
      * 隐藏提示消息
+     *
      * @param position 底部标签的下标
      */
-    public void hideMsg(int position){
+    public void hideMsg(int position) {
         mItemViews.get(position).hideMsg();
     }
 
     /**
      * 显示提示的小红点
+     *
      * @param position 底部标签的下标
      */
-    public void showNotify(int position){
+    public void showNotify(int position) {
         mItemViews.get(position).showNotify();
     }
 
     /**
      * 隐藏提示的小红点
+     *
      * @param position 底部标签的下标
      */
-    public void hideNotify(int position){
+    public void hideNotify(int position) {
         mItemViews.get(position).hideNotify();
     }
 
@@ -212,7 +243,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         this.mSmoothScroll = smoothScroll;
     }
 
-    public BottomBarItem getBottomItem(int position){
+    public BottomBarItem getBottomItem(int position) {
         return mItemViews.get(position);
     }
 
@@ -248,7 +279,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     private OnItemSelectedListener onItemSelectedListener;
 
     public interface OnItemSelectedListener {
-        void onItemSelected(BottomBarItem bottomBarItem, int previousPosition,int currentPosition);
+        void onItemSelected(BottomBarItem bottomBarItem, int previousPosition, int currentPosition);
     }
 
     public void setOnItemSelectedListener(OnItemSelectedListener onItemSelectedListener) {

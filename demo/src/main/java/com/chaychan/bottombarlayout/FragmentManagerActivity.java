@@ -80,7 +80,7 @@ public class FragmentManagerActivity extends AppCompatActivity {
                     //如果是第一个，即首页
                     if (previousPosition == currentPosition) {
                         //如果是在原来位置上点击,更换首页图标并播放旋转动画
-                        bottomBarItem.setIconSelectedResourceId(R.mipmap.tab_loading);//更换成加载图标
+                        bottomBarItem.setSelectedIconResourceId(R.mipmap.tab_loading);//更换成加载图标
                         bottomBarItem.setStatus(true);
 
                         //播放旋转动画
@@ -100,7 +100,7 @@ public class FragmentManagerActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 boolean tabNotChanged = mBottomBarLayout.getCurrentItem() == currentPosition; //是否还停留在当前页签
-                                bottomBarItem.setIconSelectedResourceId(R.mipmap.tab_home_selected);//更换成首页原来选中图标
+                                bottomBarItem.setSelectedIconResourceId(R.mipmap.tab_home_selected);//更换成首页原来选中图标
                                 bottomBarItem.setStatus(tabNotChanged);//刷新图标
                                 cancelTabLoading(bottomBarItem);
                             }
@@ -111,7 +111,7 @@ public class FragmentManagerActivity extends AppCompatActivity {
 
                 //如果点击了其他条目
                 BottomBarItem bottomItem = mBottomBarLayout.getBottomItem(0);
-                bottomItem.setIconSelectedResourceId(R.mipmap.tab_home_selected);//更换为原来的图标
+                bottomItem.setSelectedIconResourceId(R.mipmap.tab_home_selected);//更换为原来的图标
                 cancelTabLoading(bottomItem);//停止旋转动画
             }
         });

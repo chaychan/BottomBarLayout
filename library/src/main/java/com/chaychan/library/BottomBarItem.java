@@ -25,20 +25,27 @@ import java.util.Locale;
 
 public class BottomBarItem extends LinearLayout {
 
-    private Context mContext;
-    private int mIconNormalResourceId;//普通状态图标的资源id
-    private int mIconSelectedResourceId;//选中状态图标的资源id
-    private String mText;//文本
-    private int mTextSize = 12;//文字大小 默认为12sp
-    private int mTextColorNormal = 0xFF999999;    //描述文本的默认显示颜色
-    private int mTextColorSelected = 0xFF46C01B;  //述文本的默认选中显示颜色
-    private int mWhiteColor = 0xFFFFFFFF;  //白色
-    private int mMarginTop = 0;//文字和图标的距离,默认0dp
-    private boolean mOpenTouchBg = false;// 是否开启触摸背景，默认关闭
-    private Drawable mTouchDrawable;//触摸时的背景
-    private int mIconWidth;//图标的宽度
-    private int mIconHeight;//图标的高度
-    private int mItemPadding;//BottomBarItem的padding
+    private Context context;
+    private int normalIconResourceId;//普通状态图标的资源id
+    private int selectedIconResourceId;//选中状态图标的资源id
+    private String title;//文本
+    private int titleTextSize = 12;//文字大小 默认为12sp
+    private int titleNormalColor;    //描述文本的默认显示颜色
+    private int titleSelectedColor;  //述文本的默认选中显示颜色
+    private int marginTop = 0;//文字和图标的距离,默认0dp
+    private boolean openTouchBg = false;// 是否开启触摸背景，默认关闭
+    private Drawable touchDrawable;//触摸时的背景
+    private int iconWidth;//图标的宽度
+    private int iconHeight;//图标的高度
+    private int itemPadding;//BottomBarItem的padding
+    private int unreadTextSize = 10; //未读数默认字体大小10sp
+    private int unreadNumThreshold = 99;//未读数阈值
+    private int unreadTextColor;//未读数字体颜色
+    private Drawable unreadTextBg;//未读数字体背景
+    private int msgTextSize = 6; //消息默认字体大小6sp
+    private int msgTextColor;//消息文字颜色
+    private Drawable msgTextBg;//消息文字背景
+    private Drawable notifyPointBg;//小红点背景
 
 
     private ImageView mImageView;
@@ -47,17 +54,8 @@ public class BottomBarItem extends LinearLayout {
     private TextView mTvMsg;
     private TextView mTextView;
 
-    private int mUnreadTextSize = 10; //未读数默认字体大小10sp
-    private int mMsgTextSize = 6; //消息默认字体大小6sp
-    private int unreadNumThreshold = 99;//未读数阈值
-    private int mUnreadTextColor;//未读数字体颜色
-    private Drawable mUnreadTextBg;
-    private int mMsgTextColor;
-    private Drawable mMsgTextBg;
-    private Drawable mNotifyPointBg;
-
     public BottomBarItem(Context context) {
-        this(context, null);
+        super(context);
     }
 
     public BottomBarItem(Context context, @Nullable AttributeSet attrs) {
@@ -67,7 +65,7 @@ public class BottomBarItem extends LinearLayout {
     public BottomBarItem(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        mContext = context;
+        this.context = context;
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.BottomBarItem);
 
@@ -81,64 +79,64 @@ public class BottomBarItem extends LinearLayout {
     }
 
     private void initAttrs(TypedArray ta) {
-        mIconNormalResourceId = ta.getResourceId(R.styleable.BottomBarItem_iconNormal, -1);
-        mIconSelectedResourceId = ta.getResourceId(R.styleable.BottomBarItem_iconSelected, -1);
+        normalIconResourceId = ta.getResourceId(R.styleable.BottomBarItem_iconNormal, -1);
+        selectedIconResourceId = ta.getResourceId(R.styleable.BottomBarItem_iconSelected, -1);
 
-        mText = ta.getString(R.styleable.BottomBarItem_itemText);
-        mTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemTextSize, UIUtils.sp2px(mContext, mTextSize));
+        title = ta.getString(R.styleable.BottomBarItem_itemText);
+        titleTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemTextSize, UIUtils.sp2px(context, titleTextSize));
 
-        mTextColorNormal = ta.getColor(R.styleable.BottomBarItem_textColorNormal, mTextColorNormal);
-        mTextColorSelected = ta.getColor(R.styleable.BottomBarItem_textColorSelected, mTextColorSelected);
+        titleNormalColor = ta.getColor(R.styleable.BottomBarItem_textColorNormal, UIUtils.getColor(context,R.color.bbl_999999));
+        titleSelectedColor = ta.getColor(R.styleable.BottomBarItem_textColorSelected, UIUtils.getColor(context,R.color.bbl_ff0000));
 
-        mMarginTop = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemMarginTop, UIUtils.dip2Px(mContext, mMarginTop));
+        marginTop = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemMarginTop, UIUtils.dip2Px(context, marginTop));
 
-        mOpenTouchBg = ta.getBoolean(R.styleable.BottomBarItem_openTouchBg, mOpenTouchBg);
-        mTouchDrawable = ta.getDrawable(R.styleable.BottomBarItem_touchDrawable);
+        openTouchBg = ta.getBoolean(R.styleable.BottomBarItem_openTouchBg, openTouchBg);
+        touchDrawable = ta.getDrawable(R.styleable.BottomBarItem_touchDrawable);
 
-        mIconWidth = ta.getDimensionPixelSize(R.styleable.BottomBarItem_iconWidth, 0);
-        mIconHeight = ta.getDimensionPixelSize(R.styleable.BottomBarItem_iconHeight, 0);
-        mItemPadding = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemPadding, 0);
+        iconWidth = ta.getDimensionPixelSize(R.styleable.BottomBarItem_iconWidth, 0);
+        iconHeight = ta.getDimensionPixelSize(R.styleable.BottomBarItem_iconHeight, 0);
+        itemPadding = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemPadding, 0);
 
-        mUnreadTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_unreadTextSize, UIUtils.sp2px(mContext, mUnreadTextSize));
-        mUnreadTextColor = ta.getColor(R.styleable.BottomBarItem_unreadTextColor, 0xFFFFFFFF);
-        mUnreadTextBg = ta.getDrawable(R.styleable.BottomBarItem_unreadTextBg);
+        unreadTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_unreadTextSize, UIUtils.sp2px(context, unreadTextSize));
+        unreadTextColor = ta.getColor(R.styleable.BottomBarItem_unreadTextColor, UIUtils.getColor(context,R.color.white));
+        unreadTextBg = ta.getDrawable(R.styleable.BottomBarItem_unreadTextBg);
 
-        mMsgTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_msgTextSize, UIUtils.sp2px(mContext, mMsgTextSize));
-        mMsgTextColor = ta.getColor(R.styleable.BottomBarItem_msgTextColor, 0xFFFFFFFF);
-        mMsgTextBg = ta.getDrawable(R.styleable.BottomBarItem_msgTextBg);
+        msgTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_msgTextSize, UIUtils.sp2px(context, msgTextSize));
+        msgTextColor = ta.getColor(R.styleable.BottomBarItem_msgTextColor, UIUtils.getColor(context,R.color.white));
+        msgTextBg = ta.getDrawable(R.styleable.BottomBarItem_msgTextBg);
 
-        mNotifyPointBg = ta.getDrawable(R.styleable.BottomBarItem_notifyPointBg);
+        notifyPointBg = ta.getDrawable(R.styleable.BottomBarItem_notifyPointBg);
 
-        unreadNumThreshold = ta.getInteger(R.styleable.BottomBarItem_unreadThreshold,99);
+        unreadNumThreshold = ta.getInteger(R.styleable.BottomBarItem_unreadThreshold, unreadNumThreshold);
     }
 
     /**
      * 检查传入的值是否完善
      */
     private void checkValues() {
-        if (mIconNormalResourceId == -1) {
+        if (normalIconResourceId == -1) {
             throw new IllegalStateException("您还没有设置默认状态下的图标，请指定iconNormal的图标");
         }
 
-        if (mIconSelectedResourceId == -1) {
+        if (selectedIconResourceId == -1) {
             throw new IllegalStateException("您还没有设置选中状态下的图标，请指定iconSelected的图标");
         }
 
-        if (mOpenTouchBg && mTouchDrawable == null) {
+        if (openTouchBg && touchDrawable == null) {
             //如果有开启触摸背景效果但是没有传对应的drawable
             throw new IllegalStateException("开启了触摸效果，但是没有指定touchDrawable");
         }
 
-        if (mUnreadTextBg == null){
-            mUnreadTextBg = getResources().getDrawable(R.drawable.shape_unread);
+        if (unreadTextBg == null) {
+            unreadTextBg = getResources().getDrawable(R.drawable.shape_unread);
         }
 
-        if (mMsgTextBg == null){
-            mMsgTextBg = getResources().getDrawable(R.drawable.shape_msg);
+        if (msgTextBg == null) {
+            msgTextBg = getResources().getDrawable(R.drawable.shape_msg);
         }
 
-        if (mNotifyPointBg == null){
-            mNotifyPointBg = getResources().getDrawable(R.drawable.shape_notify_point);
+        if (notifyPointBg == null) {
+            notifyPointBg = getResources().getDrawable(R.drawable.shape_notify_point);
         }
     }
 
@@ -148,38 +146,38 @@ public class BottomBarItem extends LinearLayout {
 
         View view = initView();
 
-        mImageView.setImageResource(mIconNormalResourceId);
+        mImageView.setImageResource(normalIconResourceId);
 
-        if (mIconWidth != 0 && mIconHeight != 0) {
+        if (iconWidth != 0 && iconHeight != 0) {
             //如果有设置图标的宽度和高度，则设置ImageView的宽高
             FrameLayout.LayoutParams imageLayoutParams = (FrameLayout.LayoutParams) mImageView.getLayoutParams();
-            imageLayoutParams.width = mIconWidth;
-            imageLayoutParams.height = mIconHeight;
+            imageLayoutParams.width = iconWidth;
+            imageLayoutParams.height = iconHeight;
             mImageView.setLayoutParams(imageLayoutParams);
         }
 
-        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);//设置底部文字字体大小
+        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize);//设置底部文字字体大小
 
-        mTvUnread.setTextSize(TypedValue.COMPLEX_UNIT_PX, mUnreadTextSize);//设置未读数的字体大小
-        mTvUnread.setTextColor(mUnreadTextColor);//设置未读数字体颜色
-        mTvUnread.setBackground(mUnreadTextBg);//设置未读数背景
+        mTvUnread.setTextSize(TypedValue.COMPLEX_UNIT_PX, unreadTextSize);//设置未读数的字体大小
+        mTvUnread.setTextColor(unreadTextColor);//设置未读数字体颜色
+        mTvUnread.setBackground(unreadTextBg);//设置未读数背景
 
-        mTvMsg.setTextSize(TypedValue.COMPLEX_UNIT_PX, mMsgTextSize);//设置提示文字的字体大小
-        mTvMsg.setTextColor(mMsgTextColor);//设置提示文字的字体颜色
-        mTvMsg.setBackground(mMsgTextBg);//设置提示文字的背景颜色
+        mTvMsg.setTextSize(TypedValue.COMPLEX_UNIT_PX, msgTextSize);//设置提示文字的字体大小
+        mTvMsg.setTextColor(msgTextColor);//设置提示文字的字体颜色
+        mTvMsg.setBackground(msgTextBg);//设置提示文字的背景颜色
 
-        mTvNotify.setBackground(mNotifyPointBg);//设置提示点的背景颜色
+        mTvNotify.setBackground(notifyPointBg);//设置提示点的背景颜色
 
-        mTextView.setTextColor(mTextColorNormal);//设置底部文字字体颜色
-        mTextView.setText(mText);//设置标签文字
+        mTextView.setTextColor(titleNormalColor);//设置底部文字字体颜色
+        mTextView.setText(title);//设置标签文字
 
         LayoutParams textLayoutParams = (LayoutParams) mTextView.getLayoutParams();
-        textLayoutParams.topMargin = mMarginTop;
+        textLayoutParams.topMargin = marginTop;
         mTextView.setLayoutParams(textLayoutParams);
 
-        if (mOpenTouchBg) {
+        if (openTouchBg) {
             //如果有开启触摸背景
-            setBackground(mTouchDrawable);
+            setBackground(touchDrawable);
         }
 
         addView(view);
@@ -187,10 +185,10 @@ public class BottomBarItem extends LinearLayout {
 
     @NonNull
     private View initView() {
-        View view = View.inflate(mContext, R.layout.item_bottom_bar, null);
-        if (mItemPadding != 0) {
+        View view = View.inflate(context, R.layout.item_bottom_bar, null);
+        if (itemPadding != 0) {
             //如果有设置item的padding
-            view.setPadding(mItemPadding, mItemPadding, mItemPadding, mItemPadding);
+            view.setPadding(itemPadding, itemPadding, itemPadding, itemPadding);
         }
         mImageView = (ImageView) view.findViewById(R.id.iv_icon);
         mTvUnread = (TextView) view.findViewById(R.id.tv_unred_num);
@@ -208,20 +206,20 @@ public class BottomBarItem extends LinearLayout {
         return mTextView;
     }
 
-    public void setIconNormalResourceId(int mIconNormalResourceId) {
-        this.mIconNormalResourceId = mIconNormalResourceId;
+    public void setNormalIconResourceId(int mIconNormalResourceId) {
+        this.normalIconResourceId = mIconNormalResourceId;
     }
 
-    public void setIconSelectedResourceId(int mIconSelectedResourceId) {
-        this.mIconSelectedResourceId = mIconSelectedResourceId;
+    public void setSelectedIconResourceId(int mIconSelectedResourceId) {
+        this.selectedIconResourceId = mIconSelectedResourceId;
     }
 
     public void setStatus(boolean isSelected) {
-        mImageView.setImageDrawable(getResources().getDrawable(isSelected ? mIconSelectedResourceId : mIconNormalResourceId));
-        mTextView.setTextColor(isSelected ? mTextColorSelected : mTextColorNormal);
+        mImageView.setImageDrawable(getResources().getDrawable(isSelected ? selectedIconResourceId : normalIconResourceId));
+        mTextView.setTextColor(isSelected ? titleSelectedColor : titleNormalColor);
     }
 
-    private void setTvVisiable(TextView tv) {
+    private void setTvVisible(TextView tv) {
         //都设置为不可见
         mTvUnread.setVisibility(GONE);
         mTvMsg.setVisibility(GONE);
@@ -238,16 +236,8 @@ public class BottomBarItem extends LinearLayout {
         this.unreadNumThreshold = unreadNumThreshold;
     }
 
-    /**
-     * 设置未读数
-     *
-     * @param unreadNum 小于等于{@link com.chaychan.library.BottomBarItem#unreadNumThreshold}则隐藏，
-     *                  大于0小于{@link com.chaychan.library.BottomBarItem#unreadNumThreshold}则显示对应数字，
-     *                  超过{@link com.chaychan.library.BottomBarItem#unreadNumThreshold}
-     *                  显示{@link com.chaychan.library.BottomBarItem#unreadNumThreshold}+
-     */
     public void setUnreadNum(int unreadNum) {
-        setTvVisiable(mTvUnread);
+        setTvVisible(mTvUnread);
         if (unreadNum <= 0) {
             mTvUnread.setVisibility(GONE);
         } else if (unreadNum <= unreadNumThreshold) {
@@ -258,7 +248,7 @@ public class BottomBarItem extends LinearLayout {
     }
 
     public void setMsg(String msg) {
-        setTvVisiable(mTvMsg);
+        setTvVisible(mTvMsg);
         mTvMsg.setText(msg);
     }
 
@@ -267,10 +257,259 @@ public class BottomBarItem extends LinearLayout {
     }
 
     public void showNotify() {
-        setTvVisiable(mTvNotify);
+        setTvVisible(mTvNotify);
     }
 
     public void hideNotify() {
         mTvNotify.setVisibility(GONE);
+    }
+
+    public BottomBarItem create(Builder builder) {
+        this.context = builder.context;
+        this.normalIconResourceId = builder.normalIconResourceId;
+        this.selectedIconResourceId = builder.selectedIconResourceId;
+        this.title = builder.title;
+        this.titleTextSize = builder.titleTextSize;
+        this.titleNormalColor = builder.titleNormalColor;
+        this.titleSelectedColor = builder.titleSelectedColor;
+        this.marginTop = builder.marginTop;
+        this.openTouchBg = builder.openTouchBg;
+        this.touchDrawable = builder.touchDrawable;
+        this.iconWidth = builder.iconWidth;
+        this.iconHeight = builder.iconHeight;
+        this.itemPadding = builder.itemPadding;
+        this.unreadTextSize = builder.unreadTextSize;
+        this.unreadTextColor = builder.unreadTextColor;
+        this.unreadTextBg = builder.unreadTextBg;
+        this.unreadNumThreshold = builder.unreadNumThreshold;
+        this.msgTextSize = builder.msgTextSize;
+        this.msgTextColor = builder.msgTextColor;
+        this.msgTextBg = builder.msgTextBg;
+        this.notifyPointBg = builder.notifyPointBg;
+
+        checkValues();
+        init();
+        return this;
+    }
+
+    public static final class Builder {
+        private Context context;
+        private int normalIconResourceId;//普通状态图标的资源id
+        private int selectedIconResourceId;//选中状态图标的资源id
+        private String title;//标题
+        private int titleTextSize;//字体大小
+        private int titleNormalColor;    //描述文本的默认显示颜色
+        private int titleSelectedColor;  //述文本的默认选中显示颜色
+        private int marginTop;//文字和图标的距离
+        private boolean openTouchBg;// 是否开启触摸背景，默认关闭
+        private Drawable touchDrawable;//触摸时的背景
+        private int iconWidth;//图标的宽度
+        private int iconHeight;//图标的高度
+        private int itemPadding;//BottomBarItem的padding
+        private int unreadTextSize; //未读数字体大小
+        private int unreadNumThreshold;//未读数阈值
+        private int unreadTextColor;//未读数字体颜色
+        private Drawable unreadTextBg;//未读数文字背景
+        private int msgTextSize; //消息字体大小
+        private int msgTextColor;//消息文字颜色
+        private Drawable msgTextBg;//消息提醒背景颜色
+        private Drawable notifyPointBg;//小红点背景颜色
+
+        public Builder(Context context) {
+            this.context = context;
+            titleTextSize = UIUtils.sp2px(context,12);
+            titleNormalColor = getColor(R.color.bbl_999999);
+            titleSelectedColor = getColor(R.color.bbl_ff0000);
+            unreadTextSize =  UIUtils.sp2px(context,10);
+            msgTextSize =  UIUtils.sp2px(context,6);
+            unreadTextColor = getColor(R.color.white);
+            unreadNumThreshold = 99;
+            msgTextColor = getColor(R.color.white);
+        }
+
+        /**
+         * Sets the default icon's resourceId
+         */
+        public Builder normalIcon(int normalIcon) {
+            normalIconResourceId = normalIcon;
+            return this;
+        }
+
+        /**
+         * Sets the selected icon's resourceId
+         */
+        public Builder selectedIcon(int selectedIcon) {
+            selectedIconResourceId = selectedIcon;
+            return this;
+        }
+
+        /**
+         * Sets the title's resourceId
+         */
+        public Builder title(int titleId) {
+            this.title = context.getString(titleId);
+            return this;
+        }
+
+        /**
+         * Sets the title string
+         */
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        /**
+         * Sets the title's text size
+         */
+        public Builder titleTextSize(int titleTextSize) {
+            this.titleTextSize = UIUtils.sp2px(context,titleTextSize);
+            return this;
+        }
+
+        /**
+         * Sets the title's normal color resourceId
+         */
+        public Builder titleNormalColor(int titleNormalColor) {
+            this.titleNormalColor = getColor(titleNormalColor);
+            return this;
+        }
+
+        /**
+         * Sets the title's selected color resourceId
+         */
+        public Builder titleSelectedColor(int titleSelectedColor) {
+            this.titleSelectedColor = getColor(titleSelectedColor);
+            return this;
+        }
+
+        /**
+         * Sets the item's margin top
+         */
+        public Builder marginTop(int marginTop) {
+            this.marginTop = marginTop;
+            return this;
+        }
+
+        /**
+         * Sets whether to open the touch background effect
+         */
+        public Builder openTouchBg(boolean openTouchBg) {
+            this.openTouchBg = openTouchBg;
+            return this;
+        }
+
+        /**
+         * Sets touch background
+         */
+        public Builder touchDrawable(Drawable touchDrawable) {
+            this.touchDrawable = touchDrawable;
+            return this;
+        }
+
+        /**
+         * Sets icon's width
+         */
+        public Builder iconWidth(int iconWidth) {
+            this.iconWidth = iconWidth;
+            return this;
+        }
+
+        /**
+         * Sets icon's height
+         */
+        public Builder iconHeight(int iconHeight) {
+            this.iconHeight = iconHeight;
+            return this;
+        }
+
+
+        /**
+         * Sets padding for item
+         */
+        public Builder itemPadding(int itemPadding) {
+            this.itemPadding = itemPadding;
+            return this;
+        }
+
+        /**
+         * Sets unread font size
+         */
+        public Builder unreadTextSize(int unreadTextSize) {
+            this.unreadTextSize = UIUtils.sp2px(context,unreadTextSize);
+            return this;
+        }
+
+        /**
+         * Sets the number of unread array thresholds greater than the threshold to be displayed as n + n as the set threshold
+         */
+        public Builder unreadNumThreshold(int unreadNumThreshold) {
+            this.unreadNumThreshold = unreadNumThreshold;
+            return this;
+        }
+
+        /**
+         * Sets the message font size
+         */
+        public Builder msgTextSize(int msgTextSize) {
+            this.msgTextSize = UIUtils.sp2px(context,msgTextSize);
+            return this;
+        }
+
+        /**
+         * Sets the message font background
+         */
+        public Builder unreadTextBg(Drawable unreadTextBg) {
+            this.unreadTextBg = unreadTextBg;
+            return this;
+        }
+
+        /**
+         * Sets unread font color
+         */
+        public Builder unreadTextColor(int unreadTextColor) {
+            this.unreadTextColor = getColor(unreadTextColor);
+            return this;
+        }
+
+        /**
+         * Sets the message font color
+         */
+        public Builder msgTextColor(int msgTextColor) {
+            this.msgTextColor = getColor(msgTextColor);
+            return this;
+        }
+
+        /**
+         * Sets the message font background
+         */
+        public Builder msgTextBg(Drawable msgTextBg) {
+            this.msgTextBg = msgTextBg;
+            return this;
+        }
+
+        /**
+         * Set the message prompt point background
+         */
+        public Builder notifyPointBg(Drawable notifyPointBg) {
+            this.notifyPointBg = notifyPointBg;
+            return this;
+        }
+
+        /**
+         * Create a BottomBarItem object
+         */
+        public BottomBarItem create(int normalIcon, int selectedIcon, String text) {
+            normalIconResourceId = normalIcon;
+            selectedIconResourceId = selectedIcon;
+            title = text;
+
+            BottomBarItem bottomBarItem = new BottomBarItem(context);
+            return bottomBarItem.create(this);
+        }
+
+        private int getColor(int colorId){
+            return context.getResources().getColor(colorId);
+        }
     }
 }

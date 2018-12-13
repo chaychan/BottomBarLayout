@@ -31,4 +31,8 @@ public class UIUtils {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
+
+    public static int getColor(Context context,int colorId){
+        return context.getResources().getColor(colorId);
+    }
 }

@@ -3,10 +3,10 @@ package com.chaychan.bottombarlayout;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -18,7 +18,7 @@ import com.chaychan.library.BottomBarLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewPagerActivity extends FragmentActivity {
+public class ViewPagerActivity extends AppCompatActivity {
 
     private ViewPager mVpContent;
     private BottomBarLayout mBottomBarLayout;
@@ -80,7 +80,7 @@ public class ViewPagerActivity extends FragmentActivity {
                     //如果是第一个，即首页
                     if (previousPosition == currentPosition){
                         //如果是在原来位置上点击,更换首页图标并播放旋转动画
-                        bottomBarItem.setIconSelectedResourceId(R.mipmap.tab_loading);//更换成加载图标
+                        bottomBarItem.setSelectedIconResourceId(R.mipmap.tab_loading);//更换成加载图标
                         bottomBarItem.setStatus(true);
 
                         //播放旋转动画
@@ -100,7 +100,7 @@ public class ViewPagerActivity extends FragmentActivity {
                             @Override
                             public void run() {
                                 boolean tabNotChanged = mBottomBarLayout.getCurrentItem() == currentPosition; //是否还停留在当前页签
-                                bottomBarItem.setIconSelectedResourceId(R.mipmap.tab_home_selected);//更换成首页原来选中图标
+                                bottomBarItem.setSelectedIconResourceId(R.mipmap.tab_home_selected);//更换成首页原来选中图标
                                 bottomBarItem.setStatus(tabNotChanged);//刷新图标
                                 cancelTabLoading(bottomBarItem);
                             }
@@ -111,7 +111,7 @@ public class ViewPagerActivity extends FragmentActivity {
 
                 //如果点击了其他条目
                 BottomBarItem bottomItem = mBottomBarLayout.getBottomItem(0);
-                bottomItem.setIconSelectedResourceId(R.mipmap.tab_home_selected);//更换为原来的图标
+                bottomItem.setSelectedIconResourceId(R.mipmap.tab_home_selected);//更换为原来的图标
 
                 cancelTabLoading(bottomItem);//停止旋转动画
             }
