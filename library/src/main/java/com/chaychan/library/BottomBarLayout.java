@@ -84,7 +84,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         }
 
         if (mCurrentItem < mItemViews.size())
-            mItemViews.get(mCurrentItem).setStatus(true);//设置选中项
+            mItemViews.get(mCurrentItem).refreshTab(true);
 
         if (mViewPager != null) {
             mViewPager.setOnPageChangeListener(this);
@@ -118,7 +118,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     @Override
     public void onPageSelected(int position) {
         resetState();
-        mItemViews.get(position).setStatus(true);
+        mItemViews.get(position).refreshTab(true);
         if (onItemSelectedListener != null) {
             onItemSelectedListener.onItemSelected(getBottomItem(position), mCurrentItem, position);
         }
@@ -165,7 +165,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     private void updateTabState(int position) {
         resetState();
         mCurrentItem = position;
-        mItemViews.get(mCurrentItem).setStatus(true);
+        mItemViews.get(mCurrentItem).refreshTab(true);
     }
 
     /**
@@ -173,7 +173,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
      */
     private void resetState() {
         if (mCurrentItem < mItemViews.size()) {
-            mItemViews.get(mCurrentItem).setStatus(false);
+            mItemViews.get(mCurrentItem).refreshTab(false);
         }
     }
 
@@ -269,7 +269,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
             //重置所有按钮状态
             resetState();
             //恢复点击的条目颜色
-            mItemViews.get(mCurrentItem).setStatus(true);
+            mItemViews.get(mCurrentItem).refreshTab(true);
             super.onRestoreInstanceState(bundle.getParcelable(STATE_INSTANCE));
         } else {
             super.onRestoreInstanceState(state);

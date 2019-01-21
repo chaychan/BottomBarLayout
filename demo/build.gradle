@@ -30,12 +30,12 @@ android {
 }
 
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    api "com.android.support:appcompat-v7:$android_support_version"
-    api 'com.android.support.constraint:constraint-layout:1.0.1'
     testImplementation 'junit:junit:4.12'
-    api project(':library')
+    implementation "com.android.support:appcompat-v7:$android_support_version"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.1'
+    implementation project(':library')
 }

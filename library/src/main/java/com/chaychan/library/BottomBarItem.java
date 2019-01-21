@@ -26,8 +26,8 @@ import java.util.Locale;
 public class BottomBarItem extends LinearLayout {
 
     private Context context;
-    private int normalIconResourceId;//普通状态图标的资源id
-    private int selectedIconResourceId;//选中状态图标的资源id
+    private Drawable normalIcon;//普通状态图标的资源id
+    private Drawable selectedIcon;//选中状态图标的资源id
     private String title;//文本
     private int titleTextSize = 12;//文字大小 默认为12sp
     private int titleNormalColor;    //描述文本的默认显示颜色
@@ -79,8 +79,8 @@ public class BottomBarItem extends LinearLayout {
     }
 
     private void initAttrs(TypedArray ta) {
-        normalIconResourceId = ta.getResourceId(R.styleable.BottomBarItem_iconNormal, -1);
-        selectedIconResourceId = ta.getResourceId(R.styleable.BottomBarItem_iconSelected, -1);
+        normalIcon = ta.getDrawable(R.styleable.BottomBarItem_iconNormal);
+        selectedIcon = ta.getDrawable(R.styleable.BottomBarItem_iconSelected);
 
         title = ta.getString(R.styleable.BottomBarItem_itemText);
         titleTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemTextSize, UIUtils.sp2px(context, titleTextSize));
@@ -114,17 +114,17 @@ public class BottomBarItem extends LinearLayout {
      * 检查传入的值是否完善
      */
     private void checkValues() {
-        if (normalIconResourceId == -1) {
-            throw new IllegalStateException("您还没有设置默认状态下的图标，请指定iconNormal的图标");
+        if (normalIcon == null) {
+            throw new IllegalStateException("You have not set the normal icon");
         }
 
-        if (selectedIconResourceId == -1) {
-            throw new IllegalStateException("您还没有设置选中状态下的图标，请指定iconSelected的图标");
+        if (selectedIcon == null) {
+            throw new IllegalStateException("You have not set the selected icon");
         }
 
         if (openTouchBg && touchDrawable == null) {
             //如果有开启触摸背景效果但是没有传对应的drawable
-            throw new IllegalStateException("开启了触摸效果，但是没有指定touchDrawable");
+            throw new IllegalStateException("Touch effect is turned on, but touchDrawable is not specified");
         }
 
         if (unreadTextBg == null) {
@@ -146,7 +146,7 @@ public class BottomBarItem extends LinearLayout {
 
         View view = initView();
 
-        mImageView.setImageResource(normalIconResourceId);
+        mImageView.setImageDrawable(normalIcon);
 
         if (iconWidth != 0 && iconHeight != 0) {
             //如果有设置图标的宽度和高度，则设置ImageView的宽高
@@ -206,17 +206,32 @@ public class BottomBarItem extends LinearLayout {
         return mTextView;
     }
 
-    public void setNormalIconResourceId(int mIconNormalResourceId) {
-        this.normalIconResourceId = mIconNormalResourceId;
+    public void setNormalIcon(Drawable normalIcon) {
+        this.normalIcon = normalIcon;
+        refreshTab();
     }
 
-    public void setSelectedIconResourceId(int mIconSelectedResourceId) {
-        this.selectedIconResourceId = mIconSelectedResourceId;
+    public void setNormalIcon(int resId){
+        setNormalIcon(UIUtils.getDrawable(context,resId));
     }
 
-    public void setStatus(boolean isSelected) {
-        mImageView.setImageDrawable(getResources().getDrawable(isSelected ? selectedIconResourceId : normalIconResourceId));
-        mTextView.setTextColor(isSelected ? titleSelectedColor : titleNormalColor);
+    public void setSelectedIcon(Drawable selectedIcon) {
+        this.selectedIcon = selectedIcon;
+        refreshTab();
+    }
+
+    public void setSelectedIcon(int resId){
+        setSelectedIcon(UIUtils.getDrawable(context,resId));
+    }
+
+    public void refreshTab(boolean isSelected) {
+        setSelected(isSelected);
+        refreshTab();
+    }
+
+    public void refreshTab() {
+        mImageView.setImageDrawable(isSelected() ? selectedIcon : normalIcon);
+        mTextView.setTextColor(isSelected() ? titleSelectedColor : titleNormalColor);
     }
 
     private void setTvVisible(TextView tv) {
@@ -266,8 +281,8 @@ public class BottomBarItem extends LinearLayout {
 
     public BottomBarItem create(Builder builder) {
         this.context = builder.context;
-        this.normalIconResourceId = builder.normalIconResourceId;
-        this.selectedIconResourceId = builder.selectedIconResourceId;
+        this.normalIcon = builder.normalIcon;
+        this.selectedIcon = builder.selectedIcon;
         this.title = builder.title;
         this.titleTextSize = builder.titleTextSize;
         this.titleNormalColor = builder.titleNormalColor;
@@ -294,8 +309,8 @@ public class BottomBarItem extends LinearLayout {
 
     public static final class Builder {
         private Context context;
-        private int normalIconResourceId;//普通状态图标的资源id
-        private int selectedIconResourceId;//选中状态图标的资源id
+        private Drawable normalIcon;//普通状态图标的资源id
+        private Drawable selectedIcon;//选中状态图标的资源id
         private String title;//标题
         private int titleTextSize;//字体大小
         private int titleNormalColor;    //描述文本的默认显示颜色
@@ -330,16 +345,16 @@ public class BottomBarItem extends LinearLayout {
         /**
          * Sets the default icon's resourceId
          */
-        public Builder normalIcon(int normalIcon) {
-            normalIconResourceId = normalIcon;
+        public Builder normalIcon(Drawable normalIcon) {
+            this.normalIcon = normalIcon;
             return this;
         }
 
         /**
          * Sets the selected icon's resourceId
          */
-        public Builder selectedIcon(int selectedIcon) {
-            selectedIconResourceId = selectedIcon;
+        public Builder selectedIcon(Drawable selectedIcon) {
+            this.selectedIcon = selectedIcon;
             return this;
         }
 
@@ -499,13 +514,17 @@ public class BottomBarItem extends LinearLayout {
         /**
          * Create a BottomBarItem object
          */
-        public BottomBarItem create(int normalIcon, int selectedIcon, String text) {
-            normalIconResourceId = normalIcon;
-            selectedIconResourceId = selectedIcon;
+        public BottomBarItem create(Drawable normalIcon, Drawable selectedIcon, String text) {
+            this.normalIcon = normalIcon;
+            this.selectedIcon = selectedIcon;
             title = text;
 
             BottomBarItem bottomBarItem = new BottomBarItem(context);
             return bottomBarItem.create(this);
+        }
+
+        public BottomBarItem create(int normalIconId, int selectedIconId, String text) {
+            return create(UIUtils.getDrawable(context,normalIconId),UIUtils.getDrawable(context,selectedIconId),text);
         }
 
         private int getColor(int colorId){
