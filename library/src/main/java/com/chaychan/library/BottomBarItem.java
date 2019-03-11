@@ -29,6 +29,7 @@ public class BottomBarItem extends LinearLayout {
     private Drawable normalIcon;//普通状态图标的资源id
     private Drawable selectedIcon;//选中状态图标的资源id
     private String title;//文本
+    private boolean titleTextBold = false;//文字加粗
     private int titleTextSize = 12;//文字大小 默认为12sp
     private int titleNormalColor;    //描述文本的默认显示颜色
     private int titleSelectedColor;  //述文本的默认选中显示颜色
@@ -83,6 +84,7 @@ public class BottomBarItem extends LinearLayout {
         selectedIcon = ta.getDrawable(R.styleable.BottomBarItem_iconSelected);
 
         title = ta.getString(R.styleable.BottomBarItem_itemText);
+        titleTextBold = ta.getBoolean(R.styleable.BottomBarItem_itemTextBold, titleTextBold);
         titleTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemTextSize, UIUtils.sp2px(context, titleTextSize));
 
         titleNormalColor = ta.getColor(R.styleable.BottomBarItem_textColorNormal, UIUtils.getColor(context,R.color.bbl_999999));
@@ -157,7 +159,7 @@ public class BottomBarItem extends LinearLayout {
         }
 
         mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize);//设置底部文字字体大小
-
+        mTextView.getPaint().setFakeBoldText(titleTextBold);
         mTvUnread.setTextSize(TypedValue.COMPLEX_UNIT_PX, unreadTextSize);//设置未读数的字体大小
         mTvUnread.setTextColor(unreadTextColor);//设置未读数字体颜色
         mTvUnread.setBackground(unreadTextBg);//设置未读数背景
@@ -284,6 +286,7 @@ public class BottomBarItem extends LinearLayout {
         this.normalIcon = builder.normalIcon;
         this.selectedIcon = builder.selectedIcon;
         this.title = builder.title;
+        this.titleTextBold = builder.titleTextBold;
         this.titleTextSize = builder.titleTextSize;
         this.titleNormalColor = builder.titleNormalColor;
         this.titleSelectedColor = builder.titleSelectedColor;
@@ -312,6 +315,7 @@ public class BottomBarItem extends LinearLayout {
         private Drawable normalIcon;//普通状态图标的资源id
         private Drawable selectedIcon;//选中状态图标的资源id
         private String title;//标题
+        private boolean titleTextBold;//文字加粗
         private int titleTextSize;//字体大小
         private int titleNormalColor;    //描述文本的默认显示颜色
         private int titleSelectedColor;  //述文本的默认选中显示颜色
@@ -332,6 +336,7 @@ public class BottomBarItem extends LinearLayout {
 
         public Builder(Context context) {
             this.context = context;
+            titleTextBold = false;
             titleTextSize = UIUtils.sp2px(context,12);
             titleNormalColor = getColor(R.color.bbl_999999);
             titleSelectedColor = getColor(R.color.bbl_ff0000);
@@ -371,6 +376,14 @@ public class BottomBarItem extends LinearLayout {
          */
         public Builder title(String title) {
             this.title = title;
+            return this;
+        }
+
+        /**
+         * Sets the title's text bold
+         */
+        public Builder titleTextBold(boolean titleTextBold) {
+            this.titleTextBold = titleTextBold;
             return this;
         }
 
