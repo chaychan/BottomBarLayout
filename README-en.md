@@ -30,7 +30,7 @@ Add the jitpack repository address in allprojects{} in build.gradle in the proje
 Open the build.gradle in the app's module, add dependencies in dependencies {} as follows:
 
     dependencies {
-	        compile 'com.github.chaychan:BottomBarLayout:1.2.0' //It is recommended to use the latest version
+	        compile 'com.github.chaychan:BottomBarLayout:2.0.0' //It is recommended to use the latest version
 	}
 
 
@@ -45,6 +45,15 @@ The latest version can be viewed
 #### Display unread, show red dot, display message
 
 ![](./intro_img/4.png)
+
+#### Support to use lottie
+
+![](./intro_img/lottie.gif)
+
+### V2.0.0版本更新说明 (2020-11-21)
+
+- Migrate to AndroidX
+- Support to use lottie
 
 ### V1.1.2 update instructions (2018-12-13)
 
@@ -336,6 +345,12 @@ Drawable is written as follows:
 #### Set prompt point background
 
 	 app:notifyPointBg="@drawable/shape_notify_point"
+
+#### Set the name of lottie file
+
+	app:lottieJson="home.json"
+
+"home.json" is stored in the assets directory. To set Lottie's width and height, use the iconWidth and iconHeight attributes
 
 
 Well, here's the introduction of BottomBarLayout stop here, the reason for the package this control is mainly for the convenience of development, hope to help more people, if you have any ideas or comments may wish to put forward to me, I will continue to improve BottomBarLayout of.

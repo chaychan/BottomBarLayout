@@ -2,10 +2,19 @@
 
 ### 支持
 
- 如果觉得我的项目对你有所帮助的话，帮我点下**star** 吧，让更多人的人可以看到，谢谢！
+ 如果觉得我的项目对你有所帮助的话，帮我点下**Star** 吧，让更多人的人可以看到，谢谢！
+
+### 2020-11-21
+
+ 感谢各位小伙伴的支持和star，已经接近2年没有维护这个项目了，今天抽空将项目完善了一下，看到有不少小伙伴提issue，star数也已经破800了，很希望这能成为我第二个破1K的项目，我会继续维护下去，满足更多开发中的需求。 也希望有好的意见的小伙伴提issue，有能力帮忙解决出现的问题的，可以Pull Request，优秀的项目需要更多人的力量，希望各位可以一同参与进来。		
 
 ### 轻量级的底部导航栏
 &emsp;&emsp;目前市场上的App，几乎都有底部页签导航栏，所以我们在开发的时候经常需要用到这个，虽然github上有不少已经封装好的底部导航栏的工具，例如bottombar,alphaIndicator(仿微信滑动渐变底部控件)等，但是这些控件由于功能太多，而且也没有给予详细的介绍文档，所以用起来不是特别容易，有时候我们仅仅只是想要一个简简单单的底部导航，但是又不想去自己在布局中搞一个个LinearLayout或者RadioGroup，然后切换页签的时候更换图标，让ViewPager跳转到对应的页面等一系列繁琐的操作，这时候，你可以使用BottomBarLayout，简简单单就可以实现以下效果：
+
+### 我的博客
+
+[http://chaychan.tech](http://chaychan.tech)
+
 
 #### 下载体验
 
@@ -30,7 +39,7 @@
 打开app的module中的build.gradle，在dependencies{}中，添加依赖，如下：
 
     dependencies {
-	        compile 'com.github.chaychan:BottomBarLayout:1.2.0' //建议使用最新版本
+	        compile 'com.github.chaychan:BottomBarLayout:2.0.0' //建议使用最新版本
 	}
 
 
@@ -43,6 +52,15 @@
 #### 显示未读数、提示小红点、提示消息
 
 ![](./intro_img/4.png)
+
+#### 支持lottie
+
+![](./intro_img/lottie.gif)
+
+### V2.0.0版本更新说明 (2020-11-21)
+
+- 迁移至AndroidX
+- 支持lottie
 
 ### V1.2.0版本更新说明 (2018-12-13)
 
@@ -325,9 +343,15 @@ drawable的编写如下：
      app:msgTextColor="@color/msgTextColor"
      app:msgTextBg="@drawable/shape_msg"
 
-####设置提示点背景
+#### 设置提示点背景
 
 	 app:notifyPointBg="@drawable/shape_notify_point"
+
+#### 设置lottie文件名
+
+	app:lottieJson="home.json"
+
+home.json存放在assets目录中，如果要设置lottie的宽高还是使用iconWidth、iconHeight属性
 
 #### BottomBarItem的介绍
 &emsp;&emsp;BottomBarItem继承于LinearLayout，其子View有显示图标的ImageView和展示文字的TextView,分别可以通过getImageView()和getTextView()方法获取到对应的子控件。github上不少底部导航栏的控件都没能获取到对应的子控件，所以在需要对子控件进行操作的时候极不方便，有一些的思路并不是用ImageView和TextView，而是用绘制的，所以也不能获取到对应的显示图标的控件或展示文字的控件，造成无法获取到该控件，无法进行一些业务上的操作，比如类似今日头条的底部的首页，点击首页的页签，会更换成加载中的图标，执行旋转动画，BottomBarLayout可以轻松地做到这个需求。
