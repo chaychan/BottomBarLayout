@@ -52,6 +52,9 @@
 
         <!--设置未读数组阈值 大于阈值的数字将显示为 n+ n为设置的阈值-->
         <attr name="unreadThreshold" format="integer"/>
+
+        <!--lottie文件名-->
+        <attr name="lottieJson" format="string"/>
     </declare-styleable>
 
     <declare-styleable name="BottomBarLayout">

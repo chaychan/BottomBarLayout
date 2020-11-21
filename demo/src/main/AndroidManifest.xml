@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ViewPagerActivity"/>
+        <activity android:name=".ViewPagerDemoActivity"/>
+        <activity android:name=".LottieDemoActivity"/>
         <activity android:name=".FragmentManagerActivity"/>
         <activity android:name=".DynamicAddItemActivity"/>
     </application>

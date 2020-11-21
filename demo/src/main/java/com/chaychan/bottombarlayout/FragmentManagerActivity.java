@@ -2,8 +2,6 @@ package com.chaychan.bottombarlayout;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +15,9 @@ import com.chaychan.library.BottomBarLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 public class FragmentManagerActivity extends AppCompatActivity {
 
@@ -37,8 +38,9 @@ public class FragmentManagerActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        mFlContent = (FrameLayout) findViewById(R.id.fl_content);
-        mBottomBarLayout = (BottomBarLayout) findViewById(R.id.bbl);
+        getSupportActionBar().setTitle(FragmentManagerActivity.class.getSimpleName());
+        mFlContent = findViewById(R.id.fl_content);
+        mBottomBarLayout = findViewById(R.id.bbl);
     }
 
     private void initData() {
@@ -82,7 +84,7 @@ public class FragmentManagerActivity extends AppCompatActivity {
                     //如果是第一个，即首页
                     if (previousPosition == currentPosition) {
                         //如果是在原来位置上点击,更换首页图标并播放旋转动画
-                        if (mRotateAnimation != null && !mRotateAnimation.hasEnded()){
+                        if (mRotateAnimation != null && !mRotateAnimation.hasEnded()) {
                             //如果当前动画正在执行
                             return;
                         }

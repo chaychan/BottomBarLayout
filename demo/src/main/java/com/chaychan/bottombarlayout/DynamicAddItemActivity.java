@@ -1,9 +1,6 @@
 package com.chaychan.bottombarlayout;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +12,10 @@ import com.chaychan.library.BottomBarLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 /**
  * @author ChayChan
@@ -55,8 +56,9 @@ public class DynamicAddItemActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        mFlContent = (FrameLayout) findViewById(R.id.fl_content);
-        mBottomBarLayout = (BottomBarLayout) findViewById(R.id.bbl);
+        getSupportActionBar().setTitle(DynamicAddItemActivity.class.getSimpleName());
+        mFlContent = findViewById(R.id.fl_content);
+        mBottomBarLayout = findViewById(R.id.bbl);
     }
 
     private void initData() {
@@ -87,11 +89,11 @@ public class DynamicAddItemActivity extends AppCompatActivity {
                 .titleTextSize(8)
                 .titleNormalColor(R.color.tab_normal_color)
                 .titleSelectedColor(R.color.tab_selected_color)
-//              .openTouchBg(false)
-//              .marginTop(5)
-//              .itemPadding(5)
-//              .unreadNumThreshold(99)
-//              .unreadTextColor(R.color.white)
+                //              .openTouchBg(false)
+                //              .marginTop(5)
+                //              .itemPadding(5)
+                //              .unreadNumThreshold(99)
+                //              .unreadTextColor(R.color.white)
 
                 //还有很多属性，详情请查看Builder里面的方法
                 //There are still many properties, please see the methods in the Builder for details.
@@ -125,7 +127,7 @@ public class DynamicAddItemActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.action_add_item:
                 int random = new Random().nextInt(3);
                 //addFragment
@@ -136,14 +138,14 @@ public class DynamicAddItemActivity extends AppCompatActivity {
 
                 mBottomBarLayout.setCurrentItem(mFragmentList.size() - 1);
                 break;
-            case  R.id.action_remove_item:
+            case R.id.action_remove_item:
                 //移除条目
                 mBottomBarLayout.removeItem(0);
 
-                if (mFragmentList.size() != 0){
+                if (mFragmentList.size() != 0) {
                     mFragmentList.remove(0);
 
-                    if (mFragmentList.size() != 0){
+                    if (mFragmentList.size() != 0) {
                         mBottomBarLayout.setCurrentItem(0);
                     }
                 }

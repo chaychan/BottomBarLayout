@@ -2,11 +2,6 @@ package com.chaychan.bottombarlayout;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +15,13 @@ import com.chaychan.library.BottomBarLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewPagerActivity extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
+public abstract class BaseViewPagerActivity extends AppCompatActivity {
 
     private ViewPager mVpContent;
     private BottomBarLayout mBottomBarLayout;
@@ -29,46 +30,33 @@ public class ViewPagerActivity extends AppCompatActivity {
     private RotateAnimation mRotateAnimation;
     private Handler mHandler = new Handler();
 
+    protected abstract String[] getFragmentContents();
+
+    protected abstract int getLayoutResId();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_pager);
+        setContentView(getLayoutResId());
 
         initView();
         initData();
         initListener();
     }
 
-    private void initView() {
-        mVpContent = (ViewPager) findViewById(R.id.vp_content);
-        mBottomBarLayout = (BottomBarLayout) findViewById(R.id.bbl);
+    public void initView() {
+        mVpContent = findViewById(R.id.vp_content);
+        mBottomBarLayout = findViewById(R.id.bbl);
     }
 
     private void initData() {
-
-        TabFragment homeFragment = new TabFragment();
-        Bundle bundle1 = new Bundle();
-        bundle1.putString(TabFragment.CONTENT, "首页");
-        homeFragment.setArguments(bundle1);
-        mFragmentList.add(homeFragment);
-
-        TabFragment videoFragment = new TabFragment();
-        Bundle bundle2 = new Bundle();
-        bundle2.putString(TabFragment.CONTENT, "视频");
-        videoFragment.setArguments(bundle2);
-        mFragmentList.add(videoFragment);
-
-        TabFragment microFragment = new TabFragment();
-        Bundle bundle3 = new Bundle();
-        bundle3.putString(TabFragment.CONTENT, "微头条");
-        microFragment.setArguments(bundle3);
-        mFragmentList.add(microFragment);
-
-        TabFragment meFragment = new TabFragment();
-        Bundle bundle4 = new Bundle();
-        bundle4.putString(TabFragment.CONTENT, "我的");
-        meFragment.setArguments(bundle4);
-        mFragmentList.add(meFragment);
+        for (String tabContent : getFragmentContents()) {
+            TabFragment fragment = new TabFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(TabFragment.CONTENT, tabContent);
+            fragment.setArguments(bundle);
+            mFragmentList.add(fragment);
+        }
     }
 
     private void initListener() {

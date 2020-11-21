@@ -2,16 +2,15 @@ package com.chaychan.library;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * @author ChayChan
@@ -247,35 +246,6 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
 
     public BottomBarItem getBottomItem(int position) {
         return mItemViews.get(position);
-    }
-
-    /**
-     * @return 当View被销毁的时候，保存数据
-     */
-    @Override
-    protected Parcelable onSaveInstanceState() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(STATE_INSTANCE, super.onSaveInstanceState());
-        bundle.putInt(STATE_ITEM, mCurrentItem);
-        return bundle;
-    }
-
-    /**
-     * @param state 用于恢复数据使用
-     */
-    @Override
-    protected void onRestoreInstanceState(Parcelable state) {
-        if (state instanceof Bundle) {
-            Bundle bundle = (Bundle) state;
-            mCurrentItem = bundle.getInt(STATE_ITEM);
-            //重置所有按钮状态
-            resetState();
-            //恢复点击的条目颜色
-            mItemViews.get(mCurrentItem).refreshTab(true);
-            super.onRestoreInstanceState(bundle.getParcelable(STATE_INSTANCE));
-        } else {
-            super.onRestoreInstanceState(state);
-        }
     }
 
     private OnItemSelectedListener onItemSelectedListener;

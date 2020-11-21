@@ -3,8 +3,7 @@ package com.chaychan.library;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -14,7 +13,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import java.util.Locale;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 
 /**
@@ -47,9 +51,12 @@ public class BottomBarItem extends LinearLayout {
     private int msgTextColor;//消息文字颜色
     private Drawable msgTextBg;//消息文字背景
     private Drawable notifyPointBg;//小红点背景
+    private String lottieJson; //lottie文件名
+    private boolean useLottie;
 
 
     private ImageView mImageView;
+    private LottieAnimationView mLottieView;
     private TextView mTvUnread;
     private TextView mTvNotify;
     private TextView mTvMsg;
@@ -87,8 +94,8 @@ public class BottomBarItem extends LinearLayout {
         titleTextBold = ta.getBoolean(R.styleable.BottomBarItem_itemTextBold, titleTextBold);
         titleTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemTextSize, UIUtils.sp2px(context, titleTextSize));
 
-        titleNormalColor = ta.getColor(R.styleable.BottomBarItem_textColorNormal, UIUtils.getColor(context,R.color.bbl_999999));
-        titleSelectedColor = ta.getColor(R.styleable.BottomBarItem_textColorSelected, UIUtils.getColor(context,R.color.bbl_ff0000));
+        titleNormalColor = ta.getColor(R.styleable.BottomBarItem_textColorNormal, UIUtils.getColor(context, R.color.bbl_999999));
+        titleSelectedColor = ta.getColor(R.styleable.BottomBarItem_textColorSelected, UIUtils.getColor(context, R.color.bbl_ff0000));
 
         marginTop = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemMarginTop, UIUtils.dip2Px(context, marginTop));
 
@@ -100,27 +107,30 @@ public class BottomBarItem extends LinearLayout {
         itemPadding = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemPadding, 0);
 
         unreadTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_unreadTextSize, UIUtils.sp2px(context, unreadTextSize));
-        unreadTextColor = ta.getColor(R.styleable.BottomBarItem_unreadTextColor, UIUtils.getColor(context,R.color.white));
+        unreadTextColor = ta.getColor(R.styleable.BottomBarItem_unreadTextColor, UIUtils.getColor(context, R.color.white));
         unreadTextBg = ta.getDrawable(R.styleable.BottomBarItem_unreadTextBg);
 
         msgTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_msgTextSize, UIUtils.sp2px(context, msgTextSize));
-        msgTextColor = ta.getColor(R.styleable.BottomBarItem_msgTextColor, UIUtils.getColor(context,R.color.white));
+        msgTextColor = ta.getColor(R.styleable.BottomBarItem_msgTextColor, UIUtils.getColor(context, R.color.white));
         msgTextBg = ta.getDrawable(R.styleable.BottomBarItem_msgTextBg);
 
         notifyPointBg = ta.getDrawable(R.styleable.BottomBarItem_notifyPointBg);
 
         unreadNumThreshold = ta.getInteger(R.styleable.BottomBarItem_unreadThreshold, unreadNumThreshold);
+
+        lottieJson = ta.getString(R.styleable.BottomBarItem_lottieJson);
+        useLottie = !TextUtils.isEmpty(lottieJson);
     }
 
     /**
      * 检查传入的值是否完善
      */
     private void checkValues() {
-        if (normalIcon == null) {
+        if (!useLottie && normalIcon == null) {
             throw new IllegalStateException("You have not set the normal icon");
         }
 
-        if (selectedIcon == null) {
+        if (!useLottie && selectedIcon == null) {
             throw new IllegalStateException("You have not set the selected icon");
         }
 
@@ -148,14 +158,18 @@ public class BottomBarItem extends LinearLayout {
 
         View view = initView();
 
-        mImageView.setImageDrawable(normalIcon);
-
+        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mImageView.getLayoutParams();
         if (iconWidth != 0 && iconHeight != 0) {
             //如果有设置图标的宽度和高度，则设置ImageView的宽高
-            FrameLayout.LayoutParams imageLayoutParams = (FrameLayout.LayoutParams) mImageView.getLayoutParams();
-            imageLayoutParams.width = iconWidth;
-            imageLayoutParams.height = iconHeight;
-            mImageView.setLayoutParams(imageLayoutParams);
+            layoutParams.width = iconWidth;
+            layoutParams.height = iconHeight;
+        }
+
+        if (useLottie){
+            mLottieView.setLayoutParams(layoutParams);
+        }else{
+            mImageView.setImageDrawable(normalIcon);
+            mImageView.setLayoutParams(layoutParams);
         }
 
         mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize);//设置底部文字字体大小
@@ -192,11 +206,22 @@ public class BottomBarItem extends LinearLayout {
             //如果有设置item的padding
             view.setPadding(itemPadding, itemPadding, itemPadding, itemPadding);
         }
-        mImageView = (ImageView) view.findViewById(R.id.iv_icon);
-        mTvUnread = (TextView) view.findViewById(R.id.tv_unred_num);
-        mTvMsg = (TextView) view.findViewById(R.id.tv_msg);
-        mTvNotify = (TextView) view.findViewById(R.id.tv_point);
-        mTextView = (TextView) view.findViewById(R.id.tv_text);
+        mImageView = view.findViewById(R.id.iv_icon);
+        mLottieView = view.findViewById(R.id.lottieView);
+        mTvUnread = view.findViewById(R.id.tv_unred_num);
+        mTvMsg = view.findViewById(R.id.tv_msg);
+        mTvNotify = view.findViewById(R.id.tv_point);
+        mTextView = view.findViewById(R.id.tv_text);
+
+        mImageView.setVisibility(useLottie ? GONE : VISIBLE);
+        mLottieView.setVisibility(useLottie ? VISIBLE : GONE);
+
+        //如果有开启lottie 初始化
+        if (useLottie){
+            mLottieView.setAnimation(lottieJson);
+            mLottieView.setRepeatCount(0);
+        }
+
         return view;
     }
 
@@ -213,8 +238,8 @@ public class BottomBarItem extends LinearLayout {
         refreshTab();
     }
 
-    public void setNormalIcon(int resId){
-        setNormalIcon(UIUtils.getDrawable(context,resId));
+    public void setNormalIcon(int resId) {
+        setNormalIcon(UIUtils.getDrawable(context, resId));
     }
 
     public void setSelectedIcon(Drawable selectedIcon) {
@@ -222,8 +247,8 @@ public class BottomBarItem extends LinearLayout {
         refreshTab();
     }
 
-    public void setSelectedIcon(int resId){
-        setSelectedIcon(UIUtils.getDrawable(context,resId));
+    public void setSelectedIcon(int resId) {
+        setSelectedIcon(UIUtils.getDrawable(context, resId));
     }
 
     public void refreshTab(boolean isSelected) {
@@ -232,7 +257,18 @@ public class BottomBarItem extends LinearLayout {
     }
 
     public void refreshTab() {
-        mImageView.setImageDrawable(isSelected() ? selectedIcon : normalIcon);
+        if (useLottie){
+            if (isSelected()){
+                mLottieView.playAnimation();
+            }else{
+                //取消动画 进度设置为0
+                mLottieView.cancelAnimation();
+                mLottieView.setProgress(0);
+            }
+        }else{
+            mImageView.setImageDrawable(isSelected() ? selectedIcon : normalIcon);
+        }
+
         mTextView.setTextColor(isSelected() ? titleSelectedColor : titleNormalColor);
     }
 
@@ -304,6 +340,7 @@ public class BottomBarItem extends LinearLayout {
         this.msgTextColor = builder.msgTextColor;
         this.msgTextBg = builder.msgTextBg;
         this.notifyPointBg = builder.notifyPointBg;
+        this.lottieJson = builder.lottieJson;
 
         checkValues();
         init();
@@ -333,15 +370,16 @@ public class BottomBarItem extends LinearLayout {
         private int msgTextColor;//消息文字颜色
         private Drawable msgTextBg;//消息提醒背景颜色
         private Drawable notifyPointBg;//小红点背景颜色
+        private String lottieJson; //lottie文件名
 
         public Builder(Context context) {
             this.context = context;
             titleTextBold = false;
-            titleTextSize = UIUtils.sp2px(context,12);
+            titleTextSize = UIUtils.sp2px(context, 12);
             titleNormalColor = getColor(R.color.bbl_999999);
             titleSelectedColor = getColor(R.color.bbl_ff0000);
-            unreadTextSize =  UIUtils.sp2px(context,10);
-            msgTextSize =  UIUtils.sp2px(context,6);
+            unreadTextSize = UIUtils.sp2px(context, 10);
+            msgTextSize = UIUtils.sp2px(context, 6);
             unreadTextColor = getColor(R.color.white);
             unreadNumThreshold = 99;
             msgTextColor = getColor(R.color.white);
@@ -391,7 +429,7 @@ public class BottomBarItem extends LinearLayout {
          * Sets the title's text size
          */
         public Builder titleTextSize(int titleTextSize) {
-            this.titleTextSize = UIUtils.sp2px(context,titleTextSize);
+            this.titleTextSize = UIUtils.sp2px(context, titleTextSize);
             return this;
         }
 
@@ -464,7 +502,7 @@ public class BottomBarItem extends LinearLayout {
          * Sets unread font size
          */
         public Builder unreadTextSize(int unreadTextSize) {
-            this.unreadTextSize = UIUtils.sp2px(context,unreadTextSize);
+            this.unreadTextSize = UIUtils.sp2px(context, unreadTextSize);
             return this;
         }
 
@@ -480,7 +518,7 @@ public class BottomBarItem extends LinearLayout {
          * Sets the message font size
          */
         public Builder msgTextSize(int msgTextSize) {
-            this.msgTextSize = UIUtils.sp2px(context,msgTextSize);
+            this.msgTextSize = UIUtils.sp2px(context, msgTextSize);
             return this;
         }
 
@@ -525,6 +563,14 @@ public class BottomBarItem extends LinearLayout {
         }
 
         /**
+         * Set the name of lottie json file
+         */
+        public Builder lottieJson(String lottieJson) {
+            this.lottieJson = lottieJson;
+            return this;
+        }
+
+        /**
          * Create a BottomBarItem object
          */
         public BottomBarItem create(Drawable normalIcon, Drawable selectedIcon, String text) {
@@ -537,10 +583,10 @@ public class BottomBarItem extends LinearLayout {
         }
 
         public BottomBarItem create(int normalIconId, int selectedIconId, String text) {
-            return create(UIUtils.getDrawable(context,normalIconId),UIUtils.getDrawable(context,selectedIconId),text);
+            return create(UIUtils.getDrawable(context, normalIconId), UIUtils.getDrawable(context, selectedIconId), text);
         }
 
-        private int getColor(int colorId){
+        private int getColor(int colorId) {
             return context.getResources().getColor(colorId);
         }
     }
