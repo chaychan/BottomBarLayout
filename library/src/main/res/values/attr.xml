@@ -10,6 +10,8 @@
         <attr name="itemText" format="string"/>
         <!--文字大小-->
         <attr name="itemTextSize" format="dimension"/>
+        <!--文字加粗-->
+        <attr name="itemTextBold" format="boolean"/>
         <!--默认状态下的文字颜色-->
         <attr name="textColorNormal" format="color"/>
         <!--选中状态下的文字颜色-->

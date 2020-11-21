@@ -83,6 +83,7 @@ public class DynamicAddItemActivity extends AppCompatActivity {
 
     private BottomBarItem createBottomBarItem(int i) {
         BottomBarItem item = new BottomBarItem.Builder(this)
+                .titleTextBold(true)
                 .titleTextSize(8)
                 .titleNormalColor(R.color.tab_normal_color)
                 .titleSelectedColor(R.color.tab_selected_color)

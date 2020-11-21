@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
@@ -67,7 +68,8 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         }
 
         if (mViewPager != null) {
-            if (mViewPager.getAdapter().getCount() != mChildCount) {
+            PagerAdapter adapter = mViewPager.getAdapter();
+            if (adapter != null && adapter.getCount() != mChildCount) {
                 throw new IllegalArgumentException("LinearLayout的子View数量必须和ViewPager条目数量一致");
             }
         }
