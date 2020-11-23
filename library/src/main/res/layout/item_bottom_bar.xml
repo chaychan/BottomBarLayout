@@ -18,7 +18,7 @@
             android:layout_gravity="center"
             />
 
-        <com.airbnb.lottie.LottieAnimationView
+        <com.chaychan.library.MyLottieAnimationView
             android:id="@+id/lottieView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

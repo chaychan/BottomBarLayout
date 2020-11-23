@@ -19,11 +19,7 @@ import androidx.viewpager.widget.ViewPager;
  */
 public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageChangeListener {
 
-    private static final String STATE_INSTANCE = "instance_state";
-    private static final String STATE_ITEM = "state_item";
-
     private ViewPager mViewPager;
-    private int mChildCount;//子条目个数
     private List<BottomBarItem> mItemViews = new ArrayList<>();
     private int mCurrentItem;//当前条目的索引
     private boolean mSmoothScroll;
@@ -56,24 +52,27 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
 
     public void setViewPager(ViewPager viewPager) {
         this.mViewPager = viewPager;
-        init();
-    }
-
-    private void init() {
-        mItemViews.clear();
-        mChildCount = getChildCount();
-        if (mChildCount == 0) {
-            return;
-        }
 
         if (mViewPager != null) {
             PagerAdapter adapter = mViewPager.getAdapter();
-            if (adapter != null && adapter.getCount() != mChildCount) {
+            if (adapter != null && adapter.getCount() != getChildCount()) {
                 throw new IllegalArgumentException("LinearLayout的子View数量必须和ViewPager条目数量一致");
             }
         }
 
-        for (int i = 0; i < mChildCount; i++) {
+        if (mViewPager != null) {
+            mViewPager.setOnPageChangeListener(this);
+        }
+    }
+
+    private void init() {
+        mItemViews.clear();
+        int childCount = getChildCount();
+        if (childCount == 0) {
+            return;
+        }
+
+        for (int i = 0; i < childCount; i++) {
             if (getChildAt(i) instanceof BottomBarItem) {
                 BottomBarItem bottomBarItem = (BottomBarItem) getChildAt(i);
                 mItemViews.add(bottomBarItem);
@@ -86,10 +85,6 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
 
         if (mCurrentItem < mItemViews.size())
             mItemViews.get(mCurrentItem).refreshTab(true);
-
-        if (mViewPager != null) {
-            mViewPager.setOnPageChangeListener(this);
-        }
     }
 
     public void addItem(BottomBarItem item) {
@@ -174,7 +169,9 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
      */
     private void resetState() {
         if (mCurrentItem < mItemViews.size()) {
-            mItemViews.get(mCurrentItem).refreshTab(false);
+            if (mItemViews.get(mCurrentItem).isSelected()){
+                mItemViews.get(mCurrentItem).refreshTab(false);
+            }
         }
     }
 

@@ -167,6 +167,8 @@ public class BottomBarItem extends LinearLayout {
 
         if (useLottie){
             mLottieView.setLayoutParams(layoutParams);
+            mLottieView.setAnimation(lottieJson);
+            mLottieView.setRepeatCount(0);
         }else{
             mImageView.setImageDrawable(normalIcon);
             mImageView.setLayoutParams(layoutParams);
@@ -215,12 +217,6 @@ public class BottomBarItem extends LinearLayout {
 
         mImageView.setVisibility(useLottie ? GONE : VISIBLE);
         mLottieView.setVisibility(useLottie ? VISIBLE : GONE);
-
-        //如果有开启lottie 初始化
-        if (useLottie){
-            mLottieView.setAnimation(lottieJson);
-            mLottieView.setRepeatCount(0);
-        }
 
         return view;
     }

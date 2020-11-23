@@ -39,7 +39,7 @@
 打开app的module中的build.gradle，在dependencies{}中，添加依赖，如下：
 
     dependencies {
-	        compile 'com.github.chaychan:BottomBarLayout:2.0.0' //建议使用最新版本
+	        compile 'com.github.chaychan:BottomBarLayout:2.0.1' //建议使用最新版本
 	}
 
 
