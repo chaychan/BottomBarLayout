@@ -7,7 +7,7 @@
     android:orientation="vertical"
     >
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -22,7 +22,6 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:background="@color/tab_gb"
-        app:sameTabClickCallBack="true"
         >
 
         <com.chaychan.library.BottomBarItem

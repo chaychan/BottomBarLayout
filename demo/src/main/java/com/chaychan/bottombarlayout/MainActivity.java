@@ -18,6 +18,7 @@ import static androidx.recyclerview.widget.RecyclerView.ViewHolder;
 public class MainActivity extends AppCompatActivity {
 
     private DemoBean[] mDatas= {
+            new DemoBean("UseWithViewPager2", ViewPager2DemoActivity.class),
             new DemoBean("UseWithViewPager", ViewPagerDemoActivity.class),
             new DemoBean("UseWithoutViewPager",FragmentManagerActivity.class),
             new DemoBean("DynamicAddItem",DynamicAddItemActivity.class),
@@ -54,12 +55,7 @@ public class MainActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             final DemoBean data = mDatas[position];
             ((TextView)holder.itemView).setText(data.name);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    v.getContext().startActivity(new Intent(v.getContext(), data.clazz));
-                }
-            });
+            holder.itemView.setOnClickListener(v -> v.getContext().startActivity(new Intent(v.getContext(), data.clazz)));
         }
 
         @Override

@@ -22,6 +22,7 @@
         <activity android:name=".LottieDemoActivity"/>
         <activity android:name=".FragmentManagerActivity"/>
         <activity android:name=".DynamicAddItemActivity"/>
+        <activity android:name=".ViewPager2DemoActivity"/>
     </application>
 
 </manifest>

@@ -3,14 +3,17 @@ package com.chaychan.library;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 /**
  * @author ChayChan
@@ -24,6 +27,11 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     private int mCurrentItem;//当前条目的索引
     private boolean mSmoothScroll;
 
+    //相同tab点击是否回调
+    private boolean mSameTabClickCallBack;
+
+    private ViewPager2 mViewPager2;
+
     public BottomBarLayout(Context context) {
         this(context, null);
     }
@@ -35,7 +43,8 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     public BottomBarLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.BottomBarLayout);
-        mSmoothScroll = ta.getBoolean(R.styleable.BottomBarLayout_smoothScroll, false);
+        mSmoothScroll = ta.getBoolean(R.styleable.BottomBarLayout_smoothScroll, mSmoothScroll);
+        mSameTabClickCallBack = ta.getBoolean(R.styleable.BottomBarLayout_sameTabClickCallBack, mSameTabClickCallBack);
         ta.recycle();
     }
 
@@ -58,10 +67,30 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
             if (adapter != null && adapter.getCount() != getChildCount()) {
                 throw new IllegalArgumentException("LinearLayout的子View数量必须和ViewPager条目数量一致");
             }
-        }
-
-        if (mViewPager != null) {
             mViewPager.setOnPageChangeListener(this);
+        }
+    }
+
+    public void setViewPager2(androidx.viewpager2.widget.ViewPager2 viewPager2) {
+        this.mViewPager2 = viewPager2;
+
+        if (mViewPager2 != null) {
+            RecyclerView.Adapter adapter = mViewPager2.getAdapter();
+            if (adapter != null && adapter.getItemCount() != getChildCount()) {
+                throw new IllegalArgumentException("LinearLayout的子View数量必须和ViewPager条目数量一致");
+            }
+            mViewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                }
+                @Override
+                public void onPageSelected(int position) {
+                    handlePageSelected(position);
+                }
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                }
+            });
         }
     }
 
@@ -106,6 +135,16 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         }
     }
 
+    private void handlePageSelected(int position){
+        resetState();
+        mItemViews.get(position).refreshTab(true);
+        int prePos = mCurrentItem;
+        mCurrentItem = position;//记录当前位置
+        if (onItemSelectedListener != null) {
+            onItemSelectedListener.onItemSelected(getBottomItem(mCurrentItem), prePos, mCurrentItem);
+        }
+    }
+
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -113,12 +152,7 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
 
     @Override
     public void onPageSelected(int position) {
-        resetState();
-        mItemViews.get(position).refreshTab(true);
-        if (onItemSelectedListener != null) {
-            onItemSelectedListener.onItemSelected(getBottomItem(position), mCurrentItem, position);
-        }
-        mCurrentItem = position;//记录当前位置
+        handlePageSelected(position);
     }
 
     @Override
@@ -136,23 +170,28 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
 
         @Override
         public void onClick(View v) {
-            //回调点击的位置
-            if (mViewPager != null) {
-                //有设置viewPager
-                if (currentIndex == mCurrentItem) {
-                    //如果还是同个页签，使用setCurrentItem不会回调OnPageSelecte(),所以在此处需要回调点击监听
-                    if (onItemSelectedListener != null) {
-                        onItemSelectedListener.onItemSelected(getBottomItem(currentIndex), mCurrentItem, currentIndex);
-                    }
-                } else {
-                    mViewPager.setCurrentItem(currentIndex, mSmoothScroll);
-                }
-            } else {
-                //没有设置viewPager
-                if (onItemSelectedListener != null) {
+            //点击时判断是否需要拦截跳转
+            if (onItemClickInterceptor != null
+                    && onItemClickInterceptor.onItemClickIntercepted(currentIndex)){
+                return;
+            }
+            if (currentIndex == mCurrentItem) {
+                //如果还是同个页签，判断是否要回调
+                if (onItemSelectedListener != null && mSameTabClickCallBack){
                     onItemSelectedListener.onItemSelected(getBottomItem(currentIndex), mCurrentItem, currentIndex);
                 }
-
+            }else{
+                if (mViewPager != null || mViewPager2 != null) {
+                    if (mViewPager != null){
+                        mViewPager.setCurrentItem(currentIndex, mSmoothScroll);
+                    }else {
+                        mViewPager2.setCurrentItem(currentIndex, mSmoothScroll);
+                    }
+                    return;
+                }
+                if (onItemSelectedListener != null){
+                    onItemSelectedListener.onItemSelected(getBottomItem(currentIndex), mCurrentItem, currentIndex);
+                }
                 updateTabState(currentIndex);
             }
         }
@@ -176,8 +215,12 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     }
 
     public void setCurrentItem(int currentItem) {
-        if (mViewPager != null) {
-            mViewPager.setCurrentItem(currentItem, mSmoothScroll);
+        if (mViewPager != null || mViewPager2 != null) {
+            if (mViewPager != null){
+                mViewPager.setCurrentItem(currentItem, mSmoothScroll);
+            }else {
+                mViewPager2.setCurrentItem(currentItem, mSmoothScroll);
+            }
         } else {
             if (onItemSelectedListener != null) {
                 onItemSelectedListener.onItemSelected(getBottomItem(currentItem), mCurrentItem, currentItem);
@@ -253,5 +296,15 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
 
     public void setOnItemSelectedListener(OnItemSelectedListener onItemSelectedListener) {
         this.onItemSelectedListener = onItemSelectedListener;
+    }
+
+    private OnItemClickInterceptor onItemClickInterceptor;
+
+    public void setOnItemClickInterceptor(OnItemClickInterceptor onItemClickInterceptor) {
+        this.onItemClickInterceptor = onItemClickInterceptor;
+    }
+
+    public interface OnItemClickInterceptor{
+        boolean onItemClickIntercepted(int position);
     }
 }

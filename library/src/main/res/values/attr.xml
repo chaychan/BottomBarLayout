@@ -58,7 +58,10 @@
     </declare-styleable>
 
     <declare-styleable name="BottomBarLayout">
+        <!--是否开启viewPager的滑动-->
         <attr name="smoothScroll" format="boolean"/>
+        <!--是否相同tab点击回调-->
+        <attr name="sameTabClickCallBack" format="boolean"/>
     </declare-styleable>
 
 </resources>

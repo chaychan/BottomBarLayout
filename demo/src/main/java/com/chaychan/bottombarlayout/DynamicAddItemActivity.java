@@ -25,7 +25,6 @@ import androidx.fragment.app.FragmentTransaction;
 public class DynamicAddItemActivity extends AppCompatActivity {
 
     private List<TabFragment> mFragmentList = new ArrayList<>();
-    private FrameLayout mFlContent;
     private BottomBarLayout mBottomBarLayout;
 
     private int[] mNormalIconIds = new int[]{
@@ -57,7 +56,6 @@ public class DynamicAddItemActivity extends AppCompatActivity {
 
     private void initView() {
         getSupportActionBar().setTitle(DynamicAddItemActivity.class.getSimpleName());
-        mFlContent = findViewById(R.id.fl_content);
         mBottomBarLayout = findViewById(R.id.bbl);
     }
 
@@ -102,13 +100,10 @@ public class DynamicAddItemActivity extends AppCompatActivity {
     }
 
     private void initListener() {
-        mBottomBarLayout.setOnItemSelectedListener(new BottomBarLayout.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(final BottomBarItem bottomBarItem, int previousPosition, final int currentPosition) {
-                Log.i("MainActivity", "position: " + currentPosition);
+        mBottomBarLayout.setOnItemSelectedListener((bottomBarItem, previousPosition, currentPosition) -> {
+            Log.i("MainActivity", "position: " + currentPosition);
 
-                changeFragment(currentPosition);
-            }
+            changeFragment(currentPosition);
         });
     }
 
