@@ -5,4 +5,5 @@
 
     <color name="white">#ffffff</color>
     <color name="selector_grey">#DDDDDD</color>
+    <color name="tab_gb">#F3F5F4</color>
 </resources>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.chaychan.bottombarlayout">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.chaychan.bottombarlayout">
 
     <application
         android:allowBackup="true"
@@ -22,7 +23,8 @@
         <activity android:name=".LottieDemoActivity"/>
         <activity android:name=".FragmentManagerActivity"/>
         <activity android:name=".DynamicAddItemActivity"/>
-        <activity android:name=".ViewPager2DemoActivity"/>
+        <activity android:name=".ViewPager2DemoActivity" />
+
     </application>
 
 </manifest>

@@ -17,79 +17,14 @@
     <com.chaychan.library.BottomBarLayout
         android:id="@+id/bbl"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:background="@color/tab_gb"
-        >
+        android:layout_height="wrap_content"
+        app:barHeight="45dp"
+        app:barBackground="@color/tab_gb"
+        app:textColorNormal="@color/tab_normal_color"
+        app:textColorSelected="@color/tab_selected_color"
+        app:itemTextSize="8sp"
+        app:itemMarginTop="-5dp"
+        app:itemTextBold="true" />
 
-        <com.chaychan.library.BottomBarItem
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            app:iconNormal="@mipmap/tab_home_normal"
-            app:iconSelected="@mipmap/tab_home_selected"
-            app:itemText="@string/tab_home"
-            app:itemTextBold="true"
-            app:textColorNormal="@color/tab_normal_color"
-            app:textColorSelected="@color/tab_selected_color"
-            app:itemTextSize="8sp"
-            app:itemMarginTop="-5dp"
-            app:openTouchBg="true"
-            app:touchDrawable="@drawable/selector_bg"
-            />
-
-        <com.chaychan.library.BottomBarItem
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            app:iconNormal="@mipmap/tab_video_normal"
-            app:iconSelected="@mipmap/tab_video_selected"
-            app:itemText="@string/tab_video"
-            app:itemTextBold="true"
-            app:textColorNormal="@color/tab_normal_color"
-            app:textColorSelected="@color/tab_selected_color"
-            app:itemTextSize="8sp"
-            app:itemMarginTop="-5dp"
-            app:openTouchBg="true"
-            app:unreadThreshold="99"
-            app:touchDrawable="@drawable/selector_bg"
-            />
-
-
-        <com.chaychan.library.BottomBarItem
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            app:iconNormal="@mipmap/tab_micro_normal"
-            app:iconSelected="@mipmap/tab_micro_selected"
-            app:itemText="@string/tab_micro"
-            app:itemTextBold="true"
-            app:textColorNormal="@color/tab_normal_color"
-            app:textColorSelected="@color/tab_selected_color"
-            app:itemTextSize="8sp"
-            app:itemMarginTop="-5dp"
-            app:openTouchBg="true"
-            app:touchDrawable="@drawable/selector_bg"
-            />
-
-        <com.chaychan.library.BottomBarItem
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            app:iconNormal="@mipmap/tab_me_normal"
-            app:iconSelected="@mipmap/tab_me_selected"
-            app:itemText="@string/tab_me"
-            app:itemTextBold="true"
-            app:textColorNormal="@color/tab_normal_color"
-            app:textColorSelected="@color/tab_selected_color"
-            app:itemTextSize="8sp"
-            app:itemMarginTop="-5dp"
-            app:openTouchBg="true"
-            app:touchDrawable="@drawable/selector_bg"
-            />
-
-    </com.chaychan.library.BottomBarLayout>
 
 </LinearLayout>

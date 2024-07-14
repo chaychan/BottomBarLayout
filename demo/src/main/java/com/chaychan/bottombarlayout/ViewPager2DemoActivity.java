@@ -1,5 +1,6 @@
 package com.chaychan.bottombarlayout;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,8 +15,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.chaychan.library.BottomBarLayout;
+import com.chaychan.library.TabData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,9 +33,9 @@ public class ViewPager2DemoActivity extends AppCompatActivity {
 
     private List<TabFragment> mFragmentList = new ArrayList<>();
 
-    private String[] getFragmentContents() {
-        return new String[]{"首页", "视频", "微头条", "我的"};
-    }
+    private String[] mTitle = new String[]{"首页", "视频",  "微头条", "我的"};
+
+    private List<TabData> tabData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,27 +53,44 @@ public class ViewPager2DemoActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        for (String tabContent : getFragmentContents()) {
-            TabFragment fragment = new TabFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString(TabFragment.CONTENT, tabContent);
-            fragment.setArguments(bundle);
-            mFragmentList.add(fragment);
-        }
+        mFragmentList.add(createFragment(mTitle[0]));
+        mFragmentList.add(createFragment(mTitle[1]));
+        mFragmentList.add(createFragment("中间add")); //中间凸起占位的fragment 可以是空白的 然后在拦截处理
+        mFragmentList.add(createFragment(mTitle[2]));
+        mFragmentList.add(createFragment(mTitle[3]));
+
+        tabData.add(new TabData(mTitle[0], R.mipmap.tab_home_normal, R.mipmap.tab_home_selected));
+        tabData.add(new TabData(mTitle[1], R.mipmap.tab_video_normal, R.mipmap.tab_video_selected));
+        tabData.add(new TabData(mTitle[2], R.mipmap.tab_micro_normal, R.mipmap.tab_micro_selected));
+        tabData.add(new TabData(mTitle[3], R.mipmap.tab_me_normal, R.mipmap.tab_me_selected));
+        mBottomBarLayout.setData(tabData);
+    }
+
+    public TabFragment createFragment(String content){
+        TabFragment fragment = new TabFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(TabFragment.CONTENT, content);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     public void initListener() {
         mVpContent.setAdapter(new MyAdapter(this));
+        mVpContent.setUserInputEnabled(false);
         mBottomBarLayout.setViewPager2(mVpContent);
 
         mBottomBarLayout.setUnread(0, 20);//设置第一个页签的未读数为20
         mBottomBarLayout.setUnread(1, 1001);//设置第二个页签的未读数
-        mBottomBarLayout.showNotify(2);//设置第三个页签显示提示的小红点
-        mBottomBarLayout.setMsg(3, "NEW");//设置第四个页签显示NEW提示文字
+        mBottomBarLayout.showNotify(3);//设置第三个页签显示提示的小红点
+        mBottomBarLayout.setMsg(4, "NEW");//设置第四个页签显示NEW提示文字
 
-        mBottomBarLayout.setOnItemClickInterceptor(position -> {
+        mBottomBarLayout.setOnPageChangedIntercepagetor(position -> {
             boolean isLogin = false;
-            if (position == 3 && !isLogin){
+            if(position == 2){
+                Toast.makeText(ViewPager2DemoActivity.this, "可以跳转别的页面，比如发布页", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            if (position == 4 && !isLogin){
                 //no login intercept  to other tab or to LoginActivity
                 Toast.makeText(ViewPager2DemoActivity.this, "Test intercept, Login first please", Toast.LENGTH_SHORT).show();
                 return true;
@@ -115,10 +135,10 @@ public class ViewPager2DemoActivity extends AppCompatActivity {
                 mBottomBarLayout.setUnread(1, 0);
                 break;
             case R.id.action_clear_notify:
-                mBottomBarLayout.hideNotify(2);
+                mBottomBarLayout.hideNotify(3);
                 break;
             case R.id.action_clear_msg:
-                mBottomBarLayout.hideMsg(3);
+                mBottomBarLayout.hideMsg(4);
                 break;
         }
         return super.onOptionsItemSelected(item);

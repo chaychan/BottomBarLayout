@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.chaychan.library.BottomBarLayout;
+import com.chaychan.library.TabData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,8 @@ public abstract class BaseViewPagerActivity extends AppCompatActivity {
     private List<TabFragment> mFragmentList = new ArrayList<>();
 
     protected abstract String[] getFragmentContents();
+
+    protected abstract List<TabData> getTabData();
 
     protected abstract int getLayoutResId();
 
@@ -49,6 +52,7 @@ public abstract class BaseViewPagerActivity extends AppCompatActivity {
             fragment.setArguments(bundle);
             mFragmentList.add(fragment);
         }
+        mBottomBarLayout.setData(getTabData());
     }
 
     public void initListener() {

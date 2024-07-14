@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 
 import com.chaychan.library.BottomBarItem;
 import com.chaychan.library.BottomBarLayout;
+import com.chaychan.library.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,8 +69,7 @@ public class DynamicAddItemActivity extends AppCompatActivity {
             TabFragment homeFragment = createFragment(mTitleIds[i]);
             mFragmentList.add(homeFragment);
         }
-
-        changeFragment(0); //默认显示第一页
+        mBottomBarLayout.setCurrentItem(0);
     }
 
     @NonNull
@@ -84,11 +84,10 @@ public class DynamicAddItemActivity extends AppCompatActivity {
     private BottomBarItem createBottomBarItem(int i) {
         BottomBarItem item = new BottomBarItem.Builder(this)
                 .titleTextBold(true)
-                .titleTextSize(8)
+                .titleTextSize(UIUtils.dip2Px(this, 8))
                 .titleNormalColor(R.color.tab_normal_color)
                 .titleSelectedColor(R.color.tab_selected_color)
-                //              .openTouchBg(false)
-                //              .marginTop(5)
+                .marginTop(UIUtils.dip2Px(this, -5))
                 //              .itemPadding(5)
                 //              .unreadNumThreshold(99)
                 //              .unreadTextColor(R.color.white)

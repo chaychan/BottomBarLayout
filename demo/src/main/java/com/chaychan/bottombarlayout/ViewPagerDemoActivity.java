@@ -8,6 +8,10 @@ import android.widget.ImageView;
 
 import com.chaychan.library.BottomBarItem;
 import com.chaychan.library.BottomBarLayout;
+import com.chaychan.library.TabData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author ChayChan
@@ -22,6 +26,16 @@ public class ViewPagerDemoActivity extends BaseViewPagerActivity{
     @Override
     protected String[] getFragmentContents() {
         return new String[]{"首页", "视频", "微头条", "我的"};
+    }
+
+    @Override
+    protected List<TabData> getTabData() {
+        List<TabData>  tabData = new ArrayList<>();
+        tabData.add(new TabData(getFragmentContents()[0], R.mipmap.tab_home_normal, R.mipmap.tab_home_selected));
+        tabData.add(new TabData(getFragmentContents()[1], R.mipmap.tab_video_normal, R.mipmap.tab_video_selected));
+        tabData.add(new TabData(getFragmentContents()[2], R.mipmap.tab_micro_normal, R.mipmap.tab_micro_selected));
+        tabData.add(new TabData(getFragmentContents()[3], R.mipmap.tab_me_normal, R.mipmap.tab_me_selected));
+        return tabData;
     }
 
     @Override

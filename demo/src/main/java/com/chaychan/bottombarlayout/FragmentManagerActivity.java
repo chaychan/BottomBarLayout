@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.chaychan.library.BottomBarItem;
 import com.chaychan.library.BottomBarLayout;
+import com.chaychan.library.TabData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,15 @@ public class FragmentManagerActivity extends AppCompatActivity {
 
     private List<TabFragment> mFragmentList = new ArrayList<>();
     private BottomBarLayout mBottomBarLayout;
+
+    private List<TabData> getTabData() {
+        List<TabData>  tabData = new ArrayList<>();
+        tabData.add(new TabData("首页", R.mipmap.tab_home_normal, R.mipmap.tab_home_selected));
+        tabData.add(new TabData("视频", R.mipmap.tab_video_normal, R.mipmap.tab_video_selected));
+        tabData.add(new TabData("微头条", R.mipmap.tab_micro_normal, R.mipmap.tab_micro_selected));
+        tabData.add(new TabData("我的", R.mipmap.tab_me_normal, R.mipmap.tab_me_selected));
+        return tabData;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +74,8 @@ public class FragmentManagerActivity extends AppCompatActivity {
         bundle4.putString(TabFragment.CONTENT, "我的");
         meFragment.setArguments(bundle4);
         mFragmentList.add(meFragment);
+
+        mBottomBarLayout.setData(getTabData());
 
         changeFragment(0); //默认显示第一页
     }
