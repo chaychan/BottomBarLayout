@@ -1,6 +1,5 @@
 package com.chaychan.bottombarlayout;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,7 +17,6 @@ import com.chaychan.library.BottomBarLayout;
 import com.chaychan.library.TabData;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -84,7 +82,7 @@ public class ViewPager2DemoActivity extends AppCompatActivity {
         mBottomBarLayout.showNotify(3);//设置第三个页签显示提示的小红点
         mBottomBarLayout.setMsg(4, "NEW");//设置第四个页签显示NEW提示文字
 
-        mBottomBarLayout.setOnPageChangedIntercepagetor(position -> {
+        mBottomBarLayout.setOnPageChangeInterceptor(position -> {
             if(position == 2){
                 //中间凸起图标的位置
                 Toast.makeText(ViewPager2DemoActivity.this, "可以跳转别的页面，比如发布页", Toast.LENGTH_SHORT).show();

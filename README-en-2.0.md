@@ -257,7 +257,7 @@ The effect after opening is as follows:
 
 #### Intercept before jump
 ```
-    mBottomBarLayout.setOnPageChangedIntercepagetor(position -> {
+    mBottomBarLayout.setOnPageChangeInterceptor(position -> {
         boolean isLogin = false; //Simulate no login
         if (position == TAB_POSITION_ME && !isLogin){
             //no login intercept  to other tab or to LoginActivity

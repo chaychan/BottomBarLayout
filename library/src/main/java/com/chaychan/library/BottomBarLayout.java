@@ -2,8 +2,6 @@ package com.chaychan.library;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -14,11 +12,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -277,8 +272,8 @@ public class BottomBarLayout extends FrameLayout implements ViewPager.OnPageChan
 
     private void handlePageSelected(int position){
         //滑动时判断是否需要拦截跳转
-        if (onPageChangedIntercepagetor != null
-                && onPageChangedIntercepagetor.onPageChangedIntercepted(position)){
+        if (mOnPageChangeInterceptor != null
+                && mOnPageChangeInterceptor.onIntercepted(position)){
             setCurrentItem(mCurrentItem);
             return;
         }
@@ -317,8 +312,8 @@ public class BottomBarLayout extends FrameLayout implements ViewPager.OnPageChan
         @Override
         public void onClick(View v) {
             //点击时判断是否需要拦截跳转
-            if (onPageChangedIntercepagetor != null
-                    && onPageChangedIntercepagetor.onPageChangedIntercepted(currentIndex)){
+            if (mOnPageChangeInterceptor != null
+                    && mOnPageChangeInterceptor.onIntercepted(currentIndex)){
                 return;
             }
             if (currentIndex == mCurrentItem) {
@@ -444,13 +439,13 @@ public class BottomBarLayout extends FrameLayout implements ViewPager.OnPageChan
         this.onItemSelectedListener = onItemSelectedListener;
     }
 
-    private OnItemClickInterceptor onPageChangedIntercepagetor;
+    private OnPageChangeInterceptor mOnPageChangeInterceptor;
 
-    public void setOnPageChangedIntercepagetor(OnItemClickInterceptor onPageChangedIntercepagetor) {
-        this.onPageChangedIntercepagetor = onPageChangedIntercepagetor;
+    public void setOnPageChangeInterceptor(OnPageChangeInterceptor onPageChangedInterceptor) {
+        mOnPageChangeInterceptor = onPageChangedInterceptor;
     }
 
-    public interface OnItemClickInterceptor{
-        boolean onPageChangedIntercepted(int position);
+    public interface OnPageChangeInterceptor {
+        boolean onIntercepted(int position);
     }
 }

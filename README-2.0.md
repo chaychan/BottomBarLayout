@@ -252,7 +252,7 @@
 
 #### 跳转前拦截
 ```
-    mBottomBarLayout.setOnPageChangedIntercepagetor(position -> {
+    mBottomBarLayout.setOnPageChangeInterceptor(position -> {
          boolean isLogin = false; //模拟没有登录
          if (position == TAB_POSITION_ME && !isLogin){
              //no login intercept  to other tab or to LoginActivity
@@ -265,16 +265,22 @@
 
 #### 设置条目选中的监听
 ```
-    mBottomBarLayout.setOnItemSelectedListener((bottomBarItem, previousPosition, currentPosition) -> {
-         //do something
-    });
+ mBottomBarLayout.setOnItemSelectedListener((bottomBarItem, previousPosition, currentPosition) -> {
+      //do something
+ });
 ```
+
+#### 设置同个tab重复点击是否回调setOnItemSelectedListener
+```
+ app:sameTabClickCallBack="true" //默认为false
+```
+
 #### 显示未读数、提示小红点、提示消息
 ```
-	mBottomBarLayout.setUnread(0,20);//设置第一个页签的未读数为20
-    mBottomBarLayout.setUnread(1,101);//设置第二个页签的未读数
-    mBottomBarLayout.showNotify(2);//设置第三个页签显示提示的小红点
-    mBottomBarLayout.setMsg(3,"NEW");//设置第四个页签显示NEW提示文字
+ mBottomBarLayout.setUnread(0,20);//设置第一个页签的未读数为20
+ mBottomBarLayout.setUnread(1,101);//设置第二个页签的未读数
+ mBottomBarLayout.showNotify(2);//设置第三个页签显示提示的小红点
+ mBottomBarLayout.setMsg(3,"NEW");//设置第四个页签显示NEW提示文字
 ```
 当设置的未读数小于或等于0时，消失未读数的小红点将会消失；  
 当未读数为1-99时，则显示对应的数字；  

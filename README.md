@@ -309,7 +309,7 @@
 
 #### 跳转前拦截
 ```
-    mBottomBarLayout.setOnPageChangedIntercepagetor(position -> {
+    mBottomBarLayout.setOnPageChangeInterceptor(position -> {
        if(position == TAB_POSITION_ADD){
            //中间凸起图标的位置
            Toast.makeText(ViewPager2DemoActivity.this, "可以跳转别的页面，比如发布页", Toast.LENGTH_SHORT).show();
