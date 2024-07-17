@@ -135,8 +135,8 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     }
 
     private void handlePageSelected(int position){
-        if (onPageChangedInterceptor != null
-                && onPageChangedInterceptor.onPageChangedIntercepted(position)){
+        if (mOnPageChangeInterceptor != null
+                && mOnPageChangeInterceptor.onIntercepted(position)){
             setCurrentItem(mCurrentItem);
             return;
         }
@@ -175,8 +175,8 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         @Override
         public void onClick(View v) {
             //点击时判断是否需要拦截跳转
-            if (onPageChangedInterceptor != null
-                    && onPageChangedInterceptor.onPageChangedIntercepted(currentIndex)){
+            if (mOnPageChangeInterceptor != null
+                    && mOnPageChangeInterceptor.onIntercepted(currentIndex)){
                 return;
             }
             if (currentIndex == mCurrentItem) {
@@ -302,13 +302,13 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         this.onItemSelectedListener = onItemSelectedListener;
     }
 
-    private OnPageChangedInterceptor onPageChangedInterceptor;
+    private OnPageChangeInterceptor mOnPageChangeInterceptor;
 
-    public void setOnPageChangedInterceptor(OnPageChangedInterceptor onPageChangedInterceptor) {
-        this.onPageChangedInterceptor = onPageChangedInterceptor;
+    public void setOnPageChangeInterceptor(OnPageChangeInterceptor onPageChangeInterceptor) {
+        mOnPageChangeInterceptor = onPageChangeInterceptor;
     }
 
-    public interface OnPageChangedInterceptor {
-        boolean onPageChangedIntercepted(int position);
+    public interface OnPageChangeInterceptor {
+        boolean onIntercepted(int position);
     }
 }
