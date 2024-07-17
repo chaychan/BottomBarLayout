@@ -5,6 +5,28 @@
     </declare-styleable>
 
     <declare-styleable name="BottomBarLayout">
+        <!--设置bar的高度-->
+        <attr name="barHeight" format="dimension"/>
+        <!--设置bar的背景-->
+        <attr name="barBackground" format="reference"/>
+
+        <!--是否中间图标凸起-->
+        <attr name="floatEnable" format="boolean"/>
+        <!--设置凸起按钮距离底部间距-->
+        <attr name="floatMarginBottom" format="dimension"/>
+
+        <!--float图标-->
+        <attr name="floatIcon" format="reference"/>
+        <!--float图标的宽度-->
+        <attr name="floatIconWidth" format="dimension"/>
+        <!--float图标的高度-->
+        <attr name="floatIconHeight" format="dimension"/>
+
+        <!--是否开启viewPager的滑动-->
+        <attr name="smoothScroll" format="boolean"/>
+        <!--是否相同tab点击回调-->
+        <attr name="sameTabClickCallBack" format="boolean"/>
+
         <!--文字大小-->
         <attr name="itemTextSize" format="dimension"/>
         <!--文字加粗-->
@@ -16,9 +38,6 @@
 
         <!--文字和图标的顶部距离-->
         <attr name="itemMarginTop" format="dimension"/>
-
-        <!--设置触摸背景-->
-        <attr name="touchDrawable" format="reference"/>
 
         <!--设置图标的宽度-->
         <attr name="iconWidth" format="dimension"/>
@@ -47,30 +66,6 @@
 
         <!--设置未读数组阈值 大于阈值的数字将显示为 n+ n为设置的阈值-->
         <attr name="unreadThreshold" format="integer"/>
-
-        <!--lottie文件名-->
-        <attr name="lottieJson" format="string"/>
-
-        <!--是否开启viewPager的滑动-->
-        <attr name="smoothScroll" format="boolean"/>
-        <!--是否相同tab点击回调-->
-        <attr name="sameTabClickCallBack" format="boolean"/>
-
-        <!--设置bar的高度-->
-        <attr name="barHeight" format="dimension"/>
-        <!--是否中间图标凸起-->
-        <attr name="floatEnable" format="boolean"/>
-        <!--设置凸起按钮距离底部间距-->
-        <attr name="floatMarginBottom" format="dimension"/>
-        <!--bar的背景-->
-        <attr name="barBackground" format="reference"/>
-
-        <!--float图标-->
-        <attr name="floatIcon" format="reference"/>
-        <!--float图标的宽度-->
-        <attr name="floatIconWidth" format="dimension"/>
-        <!--float图标的高度-->
-        <attr name="floatIconHeight" format="dimension"/>
 
     </declare-styleable>
 

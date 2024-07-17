@@ -85,11 +85,12 @@ public class ViewPager2DemoActivity extends AppCompatActivity {
         mBottomBarLayout.setMsg(4, "NEW");//设置第四个页签显示NEW提示文字
 
         mBottomBarLayout.setOnPageChangedIntercepagetor(position -> {
-            boolean isLogin = false;
             if(position == 2){
+                //中间凸起图标的位置
                 Toast.makeText(ViewPager2DemoActivity.this, "可以跳转别的页面，比如发布页", Toast.LENGTH_SHORT).show();
                 return true;
             }
+            boolean isLogin = false; //Simulate no login
             if (position == 4 && !isLogin){
                 //no login intercept  to other tab or to LoginActivity
                 Toast.makeText(ViewPager2DemoActivity.this, "Test intercept, Login first please", Toast.LENGTH_SHORT).show();
