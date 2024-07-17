@@ -3,7 +3,6 @@ package com.chaychan.library;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -136,6 +135,11 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     }
 
     private void handlePageSelected(int position){
+        if (onPageChangedInterceptor != null
+                && onPageChangedInterceptor.onPageChangedIntercepted(position)){
+            setCurrentItem(mCurrentItem);
+            return;
+        }
         resetState();
         mItemViews.get(position).refreshTab(true);
         int prePos = mCurrentItem;
@@ -171,8 +175,8 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         @Override
         public void onClick(View v) {
             //点击时判断是否需要拦截跳转
-            if (onItemClickInterceptor != null
-                    && onItemClickInterceptor.onItemClickIntercepted(currentIndex)){
+            if (onPageChangedInterceptor != null
+                    && onPageChangedInterceptor.onPageChangedIntercepted(currentIndex)){
                 return;
             }
             if (currentIndex == mCurrentItem) {
@@ -298,13 +302,13 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
         this.onItemSelectedListener = onItemSelectedListener;
     }
 
-    private OnItemClickInterceptor onItemClickInterceptor;
+    private OnPageChangedInterceptor onPageChangedInterceptor;
 
-    public void setOnItemClickInterceptor(OnItemClickInterceptor onItemClickInterceptor) {
-        this.onItemClickInterceptor = onItemClickInterceptor;
+    public void setOnPageChangedInterceptor(OnPageChangedInterceptor onPageChangedInterceptor) {
+        this.onPageChangedInterceptor = onPageChangedInterceptor;
     }
 
-    public interface OnItemClickInterceptor{
-        boolean onItemClickIntercepted(int position);
+    public interface OnPageChangedInterceptor {
+        boolean onPageChangedIntercepted(int position);
     }
 }

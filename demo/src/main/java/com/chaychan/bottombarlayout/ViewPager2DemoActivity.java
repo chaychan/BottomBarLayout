@@ -68,7 +68,7 @@ public class ViewPager2DemoActivity extends AppCompatActivity {
         mBottomBarLayout.showNotify(2);//设置第三个页签显示提示的小红点
         mBottomBarLayout.setMsg(3, "NEW");//设置第四个页签显示NEW提示文字
 
-        mBottomBarLayout.setOnItemClickInterceptor(position -> {
+        mBottomBarLayout.setOnPageChangedInterceptor(position -> {
             boolean isLogin = false;
             if (position == 3 && !isLogin){
                 //no login intercept  to other tab or to LoginActivity
