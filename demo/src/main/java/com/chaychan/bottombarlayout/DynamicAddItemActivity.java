@@ -85,12 +85,12 @@ public class DynamicAddItemActivity extends AppCompatActivity {
         BottomBarItem item = new BottomBarItem.Builder(this)
                 .titleTextBold(true)
                 .titleTextSize(UIUtils.dip2Px(this, 8))
-                .titleNormalColor(R.color.tab_normal_color)
-                .titleSelectedColor(R.color.tab_selected_color)
+                .titleNormalColor(getResources().getColor(R.color.tab_normal_color))
+                .titleSelectedColor(getResources().getColor(R.color.tab_selected_color))
                 .marginTop(UIUtils.dip2Px(this, -5))
                 //              .itemPadding(5)
                 //              .unreadNumThreshold(99)
-                //              .unreadTextColor(R.color.white)
+                //              .unreadTextColor(getResources().getColor(R.color.white))
 
                 //还有很多属性，详情请查看Builder里面的方法
                 //There are still many properties, please see the methods in the Builder for details.
